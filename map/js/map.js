@@ -8,17 +8,22 @@ const MapModule = (function() {
 
     // Initialize Mapbox map
     function init() {
-        // Note: Using public token - works without API key for basic dark map
-        // For production, get your own token at https://account.mapbox.com/
-        mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+        // Baltic Sea bounds [west, south, east, north]
+        const balticBounds = [
+            [9.0, 53.0],  // Southwest coordinates
+            [31.0, 66.0]  // Northeast coordinates
+        ];
 
         map = new mapboxgl.Map({
             container: 'map',
-            style: 'mapbox://styles/mapbox/dark-v11', // Dark tactical style
-            center: [20.0, 58.0], // Baltic Sea region
-            zoom: 5,
+            style: 'mapbox://styles/mapbox/dark-v11',
+            center: [20.0, 58.0], // Baltic Sea center
+            zoom: 5.5,
+            minZoom: 4,
+            maxZoom: 12,
             pitch: 0,
-            bearing: 0
+            bearing: 0,
+            maxBounds: balticBounds // Restrict map to Baltic Sea region
         });
 
         // Add navigation controls
@@ -37,7 +42,7 @@ const MapModule = (function() {
             document.getElementById('coordinates').textContent = `LAT: ${lat} | LON: ${lng}`;
         });
 
-        // Add grid overlay for tactical effect
+        // Add grid overlay when map loads
         map.on('load', () => {
             addGridOverlay();
         });
@@ -61,6 +66,87 @@ const MapModule = (function() {
                 'line-color': '#00ff00',
                 'line-width': 0.5,
                 'line-opacity': 0.15
+            }
+        });
+    }
+
+    // Add Baltic Sea specific labels and markers
+    function addBalticSeaLabels() {
+        // Major Baltic Sea ports and cities
+        const balticCities = {
+            type: 'FeatureCollection',
+            features: [
+                {
+                    type: 'Feature',
+                    geometry: { type: 'Point', coordinates: [18.0686, 59.3293] },
+                    properties: { name: 'STOCKHOLM', type: 'capital' }
+                },
+                {
+                    type: 'Feature',
+                    geometry: { type: 'Point', coordinates: [24.9384, 60.1699] },
+                    properties: { name: 'HELSINKI', type: 'capital' }
+                },
+                {
+                    type: 'Feature',
+                    geometry: { type: 'Point', coordinates: [24.1052, 56.9496] },
+                    properties: { name: 'RIGA', type: 'capital' }
+                },
+                {
+                    type: 'Feature',
+                    geometry: { type: 'Point', coordinates: [25.2797, 54.6872] },
+                    properties: { name: 'VILNIUS', type: 'capital' }
+                },
+                {
+                    type: 'Feature',
+                    geometry: { type: 'Point', coordinates: [12.5683, 55.6761] },
+                    properties: { name: 'COPENHAGEN', type: 'capital' }
+                },
+                {
+                    type: 'Feature',
+                    geometry: { type: 'Point', coordinates: [13.4050, 52.5200] },
+                    properties: { name: 'BERLIN', type: 'capital' }
+                },
+                {
+                    type: 'Feature',
+                    geometry: { type: 'Point', coordinates: [30.3141, 59.9311] },
+                    properties: { name: 'ST. PETERSBURG', type: 'port' }
+                },
+                {
+                    type: 'Feature',
+                    geometry: { type: 'Point', coordinates: [20.4651, 54.5189] },
+                    properties: { name: 'KALININGRAD', type: 'port' }
+                },
+                {
+                    type: 'Feature',
+                    geometry: { type: 'Point', coordinates: [18.6466, 54.3520] },
+                    properties: { name: 'GDANSK', type: 'port' }
+                }
+            ]
+        };
+
+        // Add source for city markers
+        map.addSource('baltic-cities', {
+            type: 'geojson',
+            data: balticCities
+        });
+
+        // Add city labels with tactical styling
+        map.addLayer({
+            id: 'baltic-city-labels',
+            type: 'symbol',
+            source: 'baltic-cities',
+            layout: {
+                'text-field': ['get', 'name'],
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+                'text-size': 11,
+                'text-offset': [0, 1.5],
+                'text-anchor': 'top'
+            },
+            paint: {
+                'text-color': '#00cc00',
+                'text-halo-color': '#000000',
+                'text-halo-width': 1.5,
+                'text-opacity': 0.8
             }
         });
     }
