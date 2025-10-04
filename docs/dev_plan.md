@@ -1,13 +1,13 @@
 # Baltic Siren - Shadow Fleet Tracker MVP Development Plan
 
 ## Overview
-Build a lightweight web application to track 323 sanctioned vessels in real-time using VesselFinder API and display them on an interactive map.
+Build a lightweight web application to track sanctioned vessels in real-time using VesselFinder API and display them on an interactive map.
 
 ## Tech Stack
-- **Frontend**: HTML5, Vanilla JavaScript (or React for better state management)
+- **Frontend**: React 
 - **Map Library**: Leaflet.js or Mapbox GL JS (open-source, better control than iframe embed)
 - **Styling**: Tailwind CSS (CDN for quick setup)
-- **Dev Server**: Simple HTTP server (Python, Node.js, or Vite)
+- **Dev Server**: Simple HTTP server (Python)
 
 ## Architecture
 
@@ -145,20 +145,3 @@ Expected response includes:
 - Use environment variables or config file (.gitignored)
 - Implement rate limiting on client side
 - Validate API responses before rendering
-
-## Future Enhancements (Post-MVP)
-- Historical track playback
-- Proximity alerts for critical infrastructure
-- Export vessel data to CSV/JSON
-- Dark mode
-- Multi-language support
-- Advanced analytics dashboard
-- WebSocket integration for real-time updates
-- Backend proxy to secure API key
-
-## Next Steps
-1. Set up project structure
-2. Create basic HTML/CSS layout with map
-3. Implement VesselFinder API integration
-4. Connect data to map visualization
-5. Add interactivity and filters
