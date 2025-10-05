@@ -74,24 +74,16 @@
                 <div id="map" class="map"></div>
                 <div class="map-overlay">
                     <div class="coordinates" id="coordinates">LAT: -- | LON: --</div>
+                    <div class="legend-icons">
+                        <button class="icon-btn active" id="vessels-toggle" title="Vessels">🚢</button>
+                        <button class="icon-btn active" id="infrastructure-toggle" title="Infrastructure">🏗️</button>
+                        <button class="icon-btn active" id="cables-toggle" title="Submarine Cables">⚡</button>
+                    </div>
                 </div>
             </main>
 
             <!-- Right Sidebar - Vessel Details -->
             <aside class="sidebar sidebar-right">
-                <!-- Layer Toggles -->
-                <div class="panel">
-                    <div class="layer-toggle" style="margin-bottom: 5px;">
-                        <button class="filter-btn active" id="infrastructure-toggle" style="width: 100%;">
-                            🏗️ INFRASTRUCTURE
-                        </button>
-                    </div>
-                    <div class="layer-toggle">
-                        <button class="filter-btn active" id="cables-toggle" style="width: 100%;">
-                            ⚡ SUBMARINE CABLES
-                        </button>
-                    </div>
-                </div>
 
                 <!-- Tracking Panel -->
                 <div class="panel" id="tracking-panel" style="display: none;">

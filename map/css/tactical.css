@@ -247,6 +247,35 @@ body::before {
 
 .coordinates {
     font-family: var(--font-mono);
+    margin-bottom: 6px;
+}
+
+.legend-icons {
+    display: flex;
+    gap: 4px;
+}
+
+.icon-btn {
+    padding: 4px 6px;
+    background: var(--bg-primary);
+    border: 1px solid var(--text-muted);
+    color: var(--text-muted);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1;
+}
+
+.icon-btn:hover {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+}
+
+.icon-btn.active {
+    background: rgba(0, 255, 0, 0.2);
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+    box-shadow: 0 0 5px var(--border-glow);
 }
 
 /* Panel Controls */

@@ -22,6 +22,21 @@ const UIModule = (function() {
             filterVessels();
         });
 
+        // Vessels toggle button
+        const vesselsToggle = document.getElementById('vessels-toggle');
+        if (vesselsToggle) {
+            vesselsToggle.addEventListener('click', () => {
+                if (window.MapModule && typeof window.MapModule.toggleVessels === 'function') {
+                    const isVisible = window.MapModule.toggleVessels();
+                    if (isVisible) {
+                        vesselsToggle.classList.add('active');
+                    } else {
+                        vesselsToggle.classList.remove('active');
+                    }
+                }
+            });
+        }
+
         // Infrastructure toggle button
         const infrastructureToggle = document.getElementById('infrastructure-toggle');
         if (infrastructureToggle) {

@@ -6,6 +6,7 @@ const MapModule = (function() {
     let infrastructureMarkers = [];
     let infrastructureVisible = true;
     let cableLayersVisible = true;
+    let vesselsVisible = true;
     let selectedVesselId = null;
     let tooltipElement = null;
     let trackedVesselMarkers = {}; // Store markers by MMSI
@@ -1192,6 +1193,19 @@ const MapModule = (function() {
         return infrastructureMarkers.map(m => m.feature);
     }
 
+    // Toggle vessel visibility
+    function toggleVessels() {
+        vesselsVisible = !vesselsVisible;
+        markers.forEach(m => {
+            if (vesselsVisible) {
+                m.marker.addTo(map);
+            } else {
+                m.marker.remove();
+            }
+        });
+        return vesselsVisible;
+    }
+
     // Public API
     return {
         init,
@@ -1200,6 +1214,7 @@ const MapModule = (function() {
         clearMarkers,
         toggleInfrastructure,
         toggleSubmarineCables,
+        toggleVessels,
         updateTrackedVessel,
         removeTrackedVessel,
         clearAllTrackedVessels,
