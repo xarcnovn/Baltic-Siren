@@ -1,3 +1,6 @@
+
+<img width="700" height="700" alt="baltic_siren" src="https://github.com/user-attachments/assets/72db71f3-4fc9-4241-ade1-ef6e7ec64572" />
+
 # ⚓ BALTIC SIREN
 
 > Real-time threat detection and response platform for monitoring sanctioned vessels and protecting critical Baltic Sea infrastructure
