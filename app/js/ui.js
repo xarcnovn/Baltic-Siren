@@ -22,6 +22,20 @@ const UIModule = (function() {
             filterVessels();
         });
 
+        // Notifications icon click
+        const notificationsIcon = document.getElementById('notifications-icon');
+        if (notificationsIcon) {
+            notificationsIcon.addEventListener('click', toggleNotificationsPanel);
+        }
+
+        // Close notifications button
+        const closeNotifications = document.getElementById('close-notifications');
+        if (closeNotifications) {
+            closeNotifications.addEventListener('click', () => {
+                document.getElementById('notifications-panel').style.display = 'none';
+            });
+        }
+
         // Vessels toggle button
         const vesselsToggle = document.getElementById('vessels-toggle');
         if (vesselsToggle) {
@@ -65,6 +79,14 @@ const UIModule = (function() {
                     }
                 }
             });
+        }
+    }
+
+    // Toggle notifications panel
+    function toggleNotificationsPanel() {
+        const panel = document.getElementById('notifications-panel');
+        if (panel) {
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
         }
     }
 
@@ -191,6 +213,8 @@ const UIModule = (function() {
                     <span class="detail-value">${vessel.category || 'N/A'}</span>
                 </div>
                 <button class="tracking-btn" id="start-tracking-btn">📍 TRACK THIS VESSEL</button>
+                <button class="tracking-btn" id="satellite-btn" style="margin-top: 8px;">🛰️ ANALYZE WITH SATELLITE</button>
+                <button class="tracking-btn" id="drones-btn" style="margin-top: 8px;">🚁 SEND DRONES</button>
             </div>
 
             <div class="detail-section">
@@ -211,6 +235,22 @@ const UIModule = (function() {
         if (trackBtn && window.TrackerModule) {
             trackBtn.addEventListener('click', () => {
                 window.TrackerModule.startTracking(vessel);
+            });
+        }
+
+        // Satellite analysis button
+        const satelliteBtn = document.getElementById('satellite-btn');
+        if (satelliteBtn) {
+            satelliteBtn.addEventListener('click', () => {
+                alert(`🛰️ Initiating satellite analysis for ${vessel.vessel_name}...\n\nThis feature would connect to satellite imagery services to track vessel movements.`);
+            });
+        }
+
+        // Drones button
+        const dronesBtn = document.getElementById('drones-btn');
+        if (dronesBtn) {
+            dronesBtn.addEventListener('click', () => {
+                alert(`🚁 Deploying reconnaissance drones to monitor ${vessel.vessel_name}...\n\nThis feature would coordinate drone surveillance missions.`);
             });
         }
     }

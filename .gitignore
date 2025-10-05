@@ -1,0 +1,31 @@
+# Environment variables
+.env
+
+# Node modules
+node_modules/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+scrape_progress.log
+
+# Data backups
+*.backup
+*.bak

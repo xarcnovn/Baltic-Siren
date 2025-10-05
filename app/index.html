@@ -21,11 +21,12 @@
         <header class="header">
             <div class="header-left">
                 <span class="logo">⚓ BALTIC SIREN</span>
-                <span class="subtitle">Shadow Fleet Tracking System</span>
+                <span class="subtitle">Shadow Fleet Response System</span>
             </div>
             <div class="header-right">
                 <span class="status-indicator">● LIVE</span>
                 <span class="timestamp" id="timestamp"></span>
+                <button class="settings-icon" id="notifications-icon" title="Security Alerts">🔔</button>
                 <button class="settings-icon" id="settings-icon" title="API Usage & Settings">⚙️</button>
             </div>
         </header>
@@ -131,9 +132,49 @@
                 <span>HackYeah Defence Task '25</span>
             </div>
             <div class="footer-right">
-                <span>Data Sources: Shadow Fleet Intelligence | AIS Tracking</span>
+                <span>Data Sources: OSINT</span>
             </div>
         </footer>
+    </div>
+
+    <!-- Notifications Panel -->
+    <div class="notifications-panel" id="notifications-panel" style="display: none;">
+        <div class="notifications-header">
+            <span>🔔 SECURITY ALERTS</span>
+            <button class="close-btn" id="close-notifications">✕</button>
+        </div>
+        <div class="notifications-content" id="notifications-content">
+            <div class="notification-item critical">
+                <div class="notification-time">2 min ago</div>
+                <div class="notification-title">⚠️ Vessel SIRIUS loitering detected</div>
+                <div class="notification-text">Vessel maintaining position 3.2km from Baltic Pipe for 47 minutes</div>
+            </div>
+            <div class="notification-item high">
+                <div class="notification-time">18 min ago</div>
+                <div class="notification-title">🔴 Unusual AIS pattern: NIKOLAY</div>
+                <div class="notification-text">Vessel executing circular patterns near Nord Stream infrastructure zone</div>
+            </div>
+            <div class="notification-item medium">
+                <div class="notification-time">1 hour ago</div>
+                <div class="notification-title">📡 Erratic behavior: PSKOV</div>
+                <div class="notification-text">Multiple speed changes (0-12 knots) detected near C-Lion1 submarine cable</div>
+            </div>
+            <div class="notification-item high">
+                <div class="notification-time">2 hours ago</div>
+                <div class="notification-title">🚨 AIS signal lost: MIKHAIL</div>
+                <div class="notification-text">Vessel stopped transmitting 8.5km from Gdansk port entrance</div>
+            </div>
+            <div class="notification-item medium">
+                <div class="notification-time">4 hours ago</div>
+                <div class="notification-title">⚡ Multiple vessels converging</div>
+                <div class="notification-text">3 shadow fleet vessels within 5km of Arkona wind farm</div>
+            </div>
+            <div class="notification-item low">
+                <div class="notification-time">6 hours ago</div>
+                <div class="notification-title">🔍 Surveillance alert: KALININGRAD</div>
+                <div class="notification-text">Vessel conducting systematic grid search pattern near pipeline route</div>
+            </div>
+        </div>
     </div>
 
     <!-- Settings Panel -->

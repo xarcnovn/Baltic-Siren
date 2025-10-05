@@ -200,11 +200,10 @@ const MapModule = (function() {
         const el = document.createElement('div');
         el.className = 'vessel-marker';
         el.style.cssText = `
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 18px;
             background: #00ff00;
-            border: 2px solid #00ff00;
-            border-radius: 50%;
+            clip-path: polygon(50% 0%, 100% 75%, 85% 100%, 15% 100%, 0% 75%);
             box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
             cursor: pointer;
             transition: all 0.3s;
@@ -213,20 +212,18 @@ const MapModule = (function() {
         // Hover effect - show tooltip and highlight marker
         el.addEventListener('mouseenter', () => {
             el.style.background = '#ffaa00';
-            el.style.borderColor = '#ffaa00';
             el.style.boxShadow = '0 0 20px rgba(255, 170, 0, 1)';
-            el.style.width = '16px';
-            el.style.height = '16px';
+            el.style.width = '18px';
+            el.style.height = '22px';
             showTooltip(vessel, el);
         });
 
         el.addEventListener('mouseleave', () => {
             if (selectedVesselId !== vessel.IMO) {
                 el.style.background = '#00ff00';
-                el.style.borderColor = '#00ff00';
                 el.style.boxShadow = '0 0 10px rgba(0, 255, 0, 0.6)';
-                el.style.width = '12px';
-                el.style.height = '12px';
+                el.style.width = '14px';
+                el.style.height = '18px';
             }
             hideTooltip();
         });
@@ -262,11 +259,10 @@ const MapModule = (function() {
         const el = document.createElement('div');
         el.className = 'vessel-marker static-marker';
         el.style.cssText = `
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 16px;
             background: #00ff00;
-            border: 1px solid #00ff00;
-            border-radius: 50%;
+            clip-path: polygon(50% 0%, 100% 75%, 85% 100%, 15% 100%, 0% 75%);
             box-shadow: 0 0 8px rgba(0, 255, 0, 0.4);
             cursor: pointer;
             transition: all 0.3s;
@@ -276,10 +272,9 @@ const MapModule = (function() {
         // Hover effect
         el.addEventListener('mouseenter', () => {
             el.style.background = '#ffaa00';
-            el.style.borderColor = '#ffaa00';
             el.style.boxShadow = '0 0 16px rgba(255, 170, 0, 0.8)';
-            el.style.width = '14px';
-            el.style.height = '14px';
+            el.style.width = '16px';
+            el.style.height = '20px';
             el.style.opacity = '1';
             showTooltip(vessel, el);
         });
@@ -287,10 +282,9 @@ const MapModule = (function() {
         el.addEventListener('mouseleave', () => {
             if (selectedVesselId !== vessel.IMO) {
                 el.style.background = '#00ff00';
-                el.style.borderColor = '#00ff00';
                 el.style.boxShadow = '0 0 8px rgba(0, 255, 0, 0.4)';
-                el.style.width = '10px';
-                el.style.height = '10px';
+                el.style.width = '12px';
+                el.style.height = '16px';
                 el.style.opacity = '0.8';
             }
             hideTooltip();
@@ -460,16 +454,14 @@ const MapModule = (function() {
         markers.forEach(m => {
             if (m.vessel.IMO === vessel.IMO) {
                 m.element.style.background = '#ffaa00';
-                m.element.style.borderColor = '#ffaa00';
                 m.element.style.boxShadow = '0 0 20px rgba(255, 170, 0, 1)';
-                m.element.style.width = '16px';
-                m.element.style.height = '16px';
+                m.element.style.width = '18px';
+                m.element.style.height = '22px';
             } else {
                 m.element.style.background = '#00ff00';
-                m.element.style.borderColor = '#00ff00';
                 m.element.style.boxShadow = '0 0 10px rgba(0, 255, 0, 0.6)';
-                m.element.style.width = '12px';
-                m.element.style.height = '12px';
+                m.element.style.width = '14px';
+                m.element.style.height = '18px';
             }
         });
 
@@ -975,15 +967,20 @@ const MapModule = (function() {
         // Create tracked marker element with vessel-specific color
         const el = document.createElement('div');
         el.className = `tracked-marker`;
+
+        // Calculate rotation based on heading or course
+        const rotation = position.heading || position.course || 0;
+
         el.style.cssText = `
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 24px;
             background: ${color.hex};
-            border: 2px solid ${color.hex};
-            border-radius: 50%;
+            clip-path: polygon(50% 0%, 100% 75%, 85% 100%, 15% 100%, 0% 75%);
             box-shadow: 0 0 20px ${color.hex};
             cursor: pointer;
             transition: all 0.3s;
+            transform: rotate(${rotation}deg);
+            transform-origin: center center;
         `;
 
         // Create popup with real-time data
