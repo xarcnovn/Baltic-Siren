@@ -4,6 +4,7 @@
     'use strict';
 
     let vesselData = [];
+    const DATALASTIC_API_KEY = '751f571d-a9ee-48c8-8c62-cd30fa980428';
 
     // Initialize application
     async function init() {
@@ -13,14 +14,12 @@
             // Initialize modules
             MapModule.init();
             UIModule.init();
+            TrackerModule.init(DATALASTIC_API_KEY);
 
             // Load vessel data
             await loadVesselData();
 
-            // Plot vessels on map
-            MapModule.plotVessels(vesselData);
-
-            // Load vessels into UI
+            // Load vessels into UI (but don't plot on map - only tracked vessels appear)
             UIModule.loadVessels(vesselData);
 
             console.log('Baltic Siren - Ready');
@@ -34,7 +33,7 @@
     async function loadVesselData() {
         try {
             console.log('Loading vessel data...');
-            const response = await fetch('data/shadow_fleet.json');
+            const response = await fetch('data/shadow_fleet.json?t=' + Date.now());
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

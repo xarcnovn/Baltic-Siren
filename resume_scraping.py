@@ -105,13 +105,62 @@ def scrape_vessel(vessel_url):
         return None
 
 
+def get_vessel_list_from_web():
+    """Fetch vessel list directly from the website"""
+    vessels = []
+    base_url = "https://war-sanctions.gur.gov.ua/en/transport/shadow-fleet"
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+    }
+
+    page = 1
+    max_pages = 55
+
+    while page <= max_pages:
+        try:
+            url = f"{base_url}?page={page}" if page > 1 else base_url
+            print(f"Fetching vessel list page {page}/{max_pages}...")
+            response = requests.get(url, headers=headers, timeout=30)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.content, 'html.parser')
+
+            vessel_links = soup.find_all('a', href=lambda x: x and '/shadow-fleet/' in x and x != '/en/transport/shadow-fleet')
+
+            found_vessels = 0
+            for link in vessel_links:
+                vessel_url = link.get('href')
+                if '?page=' in vessel_url:
+                    continue
+                if not vessel_url.startswith('http'):
+                    vessel_url = f"https://war-sanctions.gur.gov.ua{vessel_url}"
+                if vessel_url not in [v['url'] for v in vessels]:
+                    vessel_id = vessel_url.split('/')[-1]
+                    vessels.append({
+                        'id': vessel_id,
+                        'url': vessel_url
+                    })
+                    found_vessels += 1
+
+            print(f"  Found {found_vessels} new vessels on page {page} (Total: {len(vessels)})")
+
+            if found_vessels == 0:
+                print(f"No more vessels found. Stopping at page {page}.")
+                break
+
+            page += 1
+            time.sleep(1)
+        except Exception as e:
+            print(f"Error fetching page {page}: {e}")
+            break
+
+    return vessels
+
 def resume_scraping():
     """Resume scraping from where we left off"""
 
-    # Load the full vessel list
-    print("Loading vessel list...")
-    with open('vessel_list.json', 'r', encoding='utf-8') as f:
-        all_vessels = json.load(f)
+    # Fetch the full vessel list from web
+    print("Fetching vessel list from website...")
+    all_vessels = get_vessel_list_from_web()
 
     # Load already scraped vessels
     print("Loading already scraped vessels...")

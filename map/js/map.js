@@ -3,8 +3,13 @@
 const MapModule = (function() {
     let map;
     let markers = [];
+    let infrastructureMarkers = [];
+    let infrastructureVisible = true;
+    let cableLayersVisible = true;
     let selectedVesselId = null;
     let tooltipElement = null;
+    let trackedVesselMarkers = {}; // Store markers by MMSI
+    let vesselTrails = {}; // Store trail layers by MMSI
 
     // Initialize Mapbox map
     function init() {
@@ -42,9 +47,11 @@ const MapModule = (function() {
             document.getElementById('coordinates').textContent = `LAT: ${lat} | LON: ${lng}`;
         });
 
-        // Add grid overlay when map loads
+        // Add grid overlay and infrastructure when map loads
         map.on('load', () => {
             addGridOverlay();
+            loadInfrastructure();
+            loadSubmarineCables();
         });
 
         console.log('Map initialized');
@@ -290,11 +297,23 @@ const MapModule = (function() {
             </div>
         `;
 
-        // Position tooltip relative to marker
-        const rect = markerElement.getBoundingClientRect();
+        // Show tooltip invisibly to get its dimensions
         tooltip.style.display = 'block';
-        tooltip.style.left = rect.left + rect.width / 2 + 'px';
-        tooltip.style.top = rect.top - 10 + 'px';
+        tooltip.style.visibility = 'hidden';
+        tooltip.style.left = '0px';
+        tooltip.style.top = '0px';
+
+        // Get dimensions after content is set
+        const tooltipRect = tooltip.getBoundingClientRect();
+        const rect = markerElement.getBoundingClientRect();
+
+        // Calculate position: centered horizontally, above the marker
+        const left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+        const top = rect.top - tooltipRect.height - 10; // 10px gap above marker
+
+        tooltip.style.left = left + 'px';
+        tooltip.style.top = top + 'px';
+        tooltip.style.visibility = 'visible';
     }
 
     // Hide tooltip
@@ -392,11 +411,706 @@ const MapModule = (function() {
         markers = [];
     }
 
+    // Load and display infrastructure
+    async function loadInfrastructure() {
+        try {
+            const response = await fetch('data/poland_infrastructure.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            plotInfrastructure(data.features);
+            console.log(`Loaded ${data.features.length} infrastructure points`);
+        } catch (error) {
+            console.error('Error loading infrastructure:', error);
+        }
+    }
+
+    // Get marker color based on category
+    function getInfrastructureColor(category) {
+        const colors = {
+            'port': '#3b82f6',      // Blue
+            'naval': '#8b5cf6',     // Purple
+            'energy': '#eab308',    // Yellow
+            'pipeline': '#ec4899',  // Pink
+            'telecom': '#10b981',   // Green
+            'cable': '#06b6d4'      // Cyan
+        };
+        return colors[category] || '#ffffff';
+    }
+
+    // Get marker icon based on category
+    function getInfrastructureIcon(category) {
+        const icons = {
+            'port': '⚓',
+            'naval': '⚔',
+            'energy': '⚡',
+            'pipeline': '▬',
+            'telecom': '📡',
+            'cable': '═'
+        };
+        return icons[category] || '●';
+    }
+
+    // Create infrastructure marker element
+    function createInfrastructureMarker(feature) {
+        const { category, name } = feature.properties;
+        const color = getInfrastructureColor(category);
+        const icon = getInfrastructureIcon(category);
+
+        const el = document.createElement('div');
+        el.className = 'infrastructure-marker';
+        el.innerHTML = icon;
+        el.style.cssText = `
+            width: 20px;
+            height: 20px;
+            background: ${color};
+            border: 2px solid ${color};
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px ${color}80;
+        `;
+
+        // Hover effect
+        el.addEventListener('mouseenter', () => {
+            el.style.width = '26px';
+            el.style.height = '26px';
+            el.style.fontSize = '16px';
+            el.style.boxShadow = `0 0 20px ${color}`;
+            showInfrastructureTooltip(feature, el);
+        });
+
+        el.addEventListener('mouseleave', () => {
+            el.style.width = '20px';
+            el.style.height = '20px';
+            el.style.fontSize = '12px';
+            el.style.boxShadow = `0 0 10px ${color}80`;
+            hideTooltip();
+        });
+
+        return el;
+    }
+
+    // Create infrastructure popup content
+    function createInfrastructurePopup(properties) {
+        const criticalityColor = {
+            'critical': '#ff0000',
+            'high': '#ff6600',
+            'medium': '#ffaa00',
+            'low': '#00ff00'
+        };
+
+        return `
+            <div class="popup-vessel-name">${properties.name}</div>
+            <div class="popup-detail">
+                <span class="popup-label">Type:</span>
+                <span class="popup-value">${properties.type}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Category:</span>
+                <span class="popup-value">${properties.category.toUpperCase()}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Status:</span>
+                <span class="popup-value">${properties.status.toUpperCase()}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Capacity:</span>
+                <span class="popup-value">${properties.capacity}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Criticality:</span>
+                <span class="popup-value" style="color: ${criticalityColor[properties.criticality]}">${properties.criticality.toUpperCase()}</span>
+            </div>
+            <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #333; font-size: 11px;">
+                ${properties.details}
+            </div>
+        `;
+    }
+
+    // Show infrastructure tooltip
+    function showInfrastructureTooltip(feature, markerElement) {
+        const tooltip = createTooltip();
+        const { name, category, type, status } = feature.properties;
+        const color = getInfrastructureColor(category);
+
+        tooltip.innerHTML = `
+            <div class="tooltip-content">
+                <div class="tooltip-name" style="color: ${color}">${name}</div>
+                <div class="tooltip-row">
+                    <span class="tooltip-label">Type:</span> ${type}
+                </div>
+                <div class="tooltip-row">
+                    <span class="tooltip-label">Status:</span> ${status.toUpperCase()}
+                </div>
+                <div class="tooltip-row">
+                    <span class="tooltip-label">Category:</span> ${category.toUpperCase()}
+                </div>
+            </div>
+        `;
+
+        // Show tooltip invisibly to get its dimensions
+        tooltip.style.display = 'block';
+        tooltip.style.visibility = 'hidden';
+        tooltip.style.left = '0px';
+        tooltip.style.top = '0px';
+
+        // Get dimensions after content is set
+        const tooltipRect = tooltip.getBoundingClientRect();
+        const rect = markerElement.getBoundingClientRect();
+
+        // Calculate position: centered horizontally, above the marker
+        const left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+        const top = rect.top - tooltipRect.height - 10; // 10px gap above marker
+
+        tooltip.style.left = left + 'px';
+        tooltip.style.top = top + 'px';
+        tooltip.style.visibility = 'visible';
+    }
+
+    // Show cable tooltip
+    function showCableTooltip(feature, mapEvent) {
+        const tooltip = createTooltip();
+        const { name, category, cable_type, type, status, length, capacity, landing_points } = feature.properties;
+
+        // Determine cable color based on type
+        let cableColor = getInfrastructureColor(category);
+        if (cable_type === 'power') {
+            cableColor = '#eab308'; // Yellow for power cables
+        } else if (cable_type === 'pipeline') {
+            cableColor = '#ec4899'; // Pink for pipelines
+        } else {
+            cableColor = '#06b6d4'; // Cyan for data cables
+        }
+
+        // Status colors
+        const statusColors = {
+            'operational': '#00ff00',
+            'damaged': '#ff6600',
+            'construction': '#ffaa00',
+            'planned': '#888888'
+        };
+
+        const statusColor = statusColors[status] || '#ffffff';
+
+        tooltip.innerHTML = `
+            <div class="tooltip-content">
+                <div class="tooltip-name" style="color: ${cableColor}">${name}</div>
+                <div class="tooltip-row">
+                    <span class="tooltip-label">Type:</span> ${type}
+                </div>
+                <div class="tooltip-row">
+                    <span class="tooltip-label">Status:</span> <span style="color: ${statusColor}">${status.toUpperCase()}</span>
+                </div>
+                ${length ? `<div class="tooltip-row">
+                    <span class="tooltip-label">Length:</span> ${length}
+                </div>` : ''}
+                ${capacity ? `<div class="tooltip-row">
+                    <span class="tooltip-label">Capacity:</span> ${capacity}
+                </div>` : ''}
+            </div>
+        `;
+
+        // Show tooltip invisibly to get its dimensions
+        tooltip.style.display = 'block';
+        tooltip.style.visibility = 'hidden';
+        tooltip.style.left = '0px';
+        tooltip.style.top = '0px';
+
+        // Get dimensions after content is set
+        const tooltipRect = tooltip.getBoundingClientRect();
+
+        // Calculate position based on mouse position
+        const mouseX = mapEvent.originalEvent.clientX;
+        const mouseY = mapEvent.originalEvent.clientY;
+
+        // Position tooltip above and centered on cursor
+        const left = mouseX - (tooltipRect.width / 2);
+        const top = mouseY - tooltipRect.height - 15; // 15px gap above cursor
+
+        tooltip.style.left = left + 'px';
+        tooltip.style.top = top + 'px';
+        tooltip.style.visibility = 'visible';
+    }
+
+    // Plot infrastructure on map
+    function plotInfrastructure(features) {
+        clearInfrastructure();
+
+        features.forEach(feature => {
+            const el = createInfrastructureMarker(feature);
+
+            const popup = new mapboxgl.Popup({
+                offset: 15,
+                closeButton: true,
+                closeOnClick: false
+            }).setHTML(createInfrastructurePopup(feature.properties));
+
+            const marker = new mapboxgl.Marker(el)
+                .setLngLat(feature.geometry.coordinates)
+                .setPopup(popup)
+                .addTo(map);
+
+            infrastructureMarkers.push({ marker, feature, element: el });
+        });
+
+        console.log(`Plotted ${features.length} infrastructure points`);
+    }
+
+    // Toggle infrastructure visibility
+    function toggleInfrastructure() {
+        infrastructureVisible = !infrastructureVisible;
+        infrastructureMarkers.forEach(m => {
+            if (infrastructureVisible) {
+                m.marker.addTo(map);
+            } else {
+                m.marker.remove();
+            }
+        });
+        return infrastructureVisible;
+    }
+
+    // Clear infrastructure markers
+    function clearInfrastructure() {
+        infrastructureMarkers.forEach(m => m.marker.remove());
+        infrastructureMarkers = [];
+    }
+
+    // Load and display submarine cables
+    async function loadSubmarineCables() {
+        try {
+            const response = await fetch('data/submarine_cables.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            plotSubmarineCables(data.features);
+            console.log(`Loaded ${data.features.length} submarine cables`);
+        } catch (error) {
+            console.error('Error loading submarine cables:', error);
+        }
+    }
+
+    // Plot submarine cables as line layers on map
+    function plotSubmarineCables(features) {
+        // Add each cable as a separate layer
+        features.forEach((feature, index) => {
+            const cableId = `cable-${index}`;
+            const { name, cable_type, category } = feature.properties;
+
+            // Determine cable color based on type
+            let cableColor = getInfrastructureColor(category);
+            if (cable_type === 'power') {
+                cableColor = '#eab308'; // Yellow for power cables
+            } else if (cable_type === 'pipeline') {
+                cableColor = '#ec4899'; // Pink for pipelines
+            } else {
+                cableColor = '#06b6d4'; // Cyan for data cables
+            }
+
+            // Add source for this cable
+            map.addSource(cableId, {
+                type: 'geojson',
+                data: feature
+            });
+
+            // Add line layer for the cable
+            map.addLayer({
+                id: cableId,
+                type: 'line',
+                source: cableId,
+                layout: {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                paint: {
+                    'line-color': cableColor,
+                    'line-width': 2,
+                    'line-opacity': 0.8,
+                    'line-dasharray': cable_type === 'data' ? [2, 2] : [1, 0]
+                }
+            });
+
+            // Add a glow layer underneath for better visibility
+            map.addLayer({
+                id: `${cableId}-glow`,
+                type: 'line',
+                source: cableId,
+                layout: {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                paint: {
+                    'line-color': cableColor,
+                    'line-width': 6,
+                    'line-opacity': 0.3,
+                    'line-blur': 4
+                }
+            }, cableId); // Insert glow layer before the main cable layer
+
+            // Add click handler to show cable details
+            map.on('click', cableId, (e) => {
+                const coordinates = e.lngLat;
+                const description = createCablePopup(feature.properties);
+
+                new mapboxgl.Popup()
+                    .setLngLat(coordinates)
+                    .setHTML(description)
+                    .addTo(map);
+            });
+
+            // Change cursor on hover and show tooltip
+            map.on('mouseenter', cableId, (e) => {
+                map.getCanvas().style.cursor = 'pointer';
+                showCableTooltip(feature, e);
+            });
+
+            map.on('mouseleave', cableId, () => {
+                map.getCanvas().style.cursor = '';
+                hideTooltip();
+            });
+
+            // Update tooltip position on mouse move
+            map.on('mousemove', cableId, (e) => {
+                showCableTooltip(feature, e);
+            });
+        });
+
+        console.log(`Plotted ${features.length} submarine cables`);
+    }
+
+    // Create popup content for submarine cables
+    function createCablePopup(properties) {
+        const statusColors = {
+            'operational': '#00ff00',
+            'damaged': '#ff6600',
+            'construction': '#ffaa00',
+            'planned': '#888888'
+        };
+
+        const typeIcons = {
+            'data': '📡',
+            'power': '⚡',
+            'pipeline': '▬'
+        };
+
+        return `
+            <div class="popup-vessel-name">${typeIcons[properties.cable_type] || '═'} ${properties.name}</div>
+            <div class="popup-detail">
+                <span class="popup-label">Type:</span>
+                <span class="popup-value">${properties.type}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Cable Type:</span>
+                <span class="popup-value">${properties.cable_type.toUpperCase()}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Length:</span>
+                <span class="popup-value">${properties.length}</span>
+            </div>
+            ${properties.capacity ? `
+            <div class="popup-detail">
+                <span class="popup-label">Capacity:</span>
+                <span class="popup-value">${properties.capacity}</span>
+            </div>
+            ` : ''}
+            <div class="popup-detail">
+                <span class="popup-label">Route:</span>
+                <span class="popup-value">${properties.landing_points}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Operator:</span>
+                <span class="popup-value">${properties.operator}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Status:</span>
+                <span class="popup-value" style="color: ${statusColors[properties.status]}">${properties.status.toUpperCase()}</span>
+            </div>
+            ${properties.commissioned ? `
+            <div class="popup-detail">
+                <span class="popup-label">Commissioned:</span>
+                <span class="popup-value">${properties.commissioned}</span>
+            </div>
+            ` : ''}
+            <div class="popup-detail">
+                <span class="popup-label">Criticality:</span>
+                <span class="popup-value" style="color: ${properties.criticality === 'critical' ? '#ff0000' : '#ffaa00'}">${properties.criticality.toUpperCase()}</span>
+            </div>
+            <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #333; font-size: 11px;">
+                ${properties.details}
+            </div>
+        `;
+    }
+
+    // Toggle submarine cable visibility
+    function toggleSubmarineCables() {
+        cableLayersVisible = !cableLayersVisible;
+
+        // Get all layers and toggle cable-related ones
+        const layers = map.getStyle().layers;
+        layers.forEach(layer => {
+            if (layer.id.startsWith('cable-')) {
+                map.setLayoutProperty(
+                    layer.id,
+                    'visibility',
+                    cableLayersVisible ? 'visible' : 'none'
+                );
+            }
+        });
+
+        return cableLayersVisible;
+    }
+
+    // Update tracked vessel position (multi-vessel support)
+    function updateTrackedVessel(vessel, position, color, history = null, showHistory = false) {
+        const mmsi = vessel.MMSI;
+
+        // Remove existing marker and trail for this vessel
+        if (trackedVesselMarkers[mmsi]) {
+            trackedVesselMarkers[mmsi].remove();
+        }
+        removeTrail(mmsi);
+
+        // Create tracked marker element with vessel-specific color
+        const el = document.createElement('div');
+        el.className = `tracked-marker`;
+        el.style.cssText = `
+            width: 16px;
+            height: 16px;
+            background: ${color.hex};
+            border: 2px solid ${color.hex};
+            border-radius: 50%;
+            box-shadow: 0 0 20px ${color.hex};
+            cursor: pointer;
+            transition: all 0.3s;
+        `;
+
+        // Create popup with real-time data
+        const popup = new mapboxgl.Popup({
+            offset: 15,
+            closeButton: true,
+            closeOnClick: false
+        }).setHTML(createTrackedVesselPopup(vessel, position, color));
+
+        // Create marker at real position
+        const marker = new mapboxgl.Marker(el)
+            .setLngLat([position.lng, position.lat])
+            .setPopup(popup)
+            .addTo(map);
+
+        // Store marker
+        trackedVesselMarkers[mmsi] = marker;
+
+        // Draw history trail if available and should be shown
+        if (history && history.length > 0 && showHistory) {
+            drawVesselTrail(mmsi, history, position, color);
+        }
+
+        // Focus on vessel only if it's the first tracked vessel
+        if (Object.keys(trackedVesselMarkers).length === 1) {
+            map.flyTo({
+                center: [position.lng, position.lat],
+                zoom: 7,
+                duration: 2000
+            });
+        }
+
+        console.log(`Tracked vessel marker updated for ${vessel.vessel_name} at [${position.lat}, ${position.lng}]`);
+    }
+
+    // Create popup content for tracked vessel with real-time data and route info
+    function createTrackedVesselPopup(vessel, position, color) {
+        const timestamp = position.timestamp ? new Date(position.timestamp * 1000).toUTCString() : 'N/A';
+        const eta = position.eta ? new Date(position.eta * 1000).toUTCString() : 'N/A';
+
+        return `
+            <div class="popup-vessel-name" style="color: ${color.hex}">🎯 ${vessel.vessel_name || 'UNKNOWN'}</div>
+            <div class="popup-detail">
+                <span class="popup-label">Origin:</span>
+                <span class="popup-value">${position.departure || 'Unknown'}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Destination:</span>
+                <span class="popup-value">${position.destination || 'N/A'}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">ETA:</span>
+                <span class="popup-value" style="font-size: 9px;">${eta}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Position:</span>
+                <span class="popup-value">${position.lat.toFixed(4)}°N, ${position.lng.toFixed(4)}°E</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Speed:</span>
+                <span class="popup-value">${position.speed || 'N/A'} knots</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Course:</span>
+                <span class="popup-value">${position.course || 'N/A'}°</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Heading:</span>
+                <span class="popup-value">${position.heading || 'N/A'}°</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Nav Status:</span>
+                <span class="popup-value">${position.navstat || 'N/A'}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Last Update:</span>
+                <span class="popup-value" style="font-size: 9px;">${timestamp}</span>
+            </div>
+        `;
+    }
+
+    // Draw vessel movement trail on map
+    function drawVesselTrail(mmsi, history, currentPosition, color) {
+        if (!history || history.length === 0) return;
+
+        // Create line coordinates from history + current position
+        const coordinates = [
+            ...history.map(point => [point.lng, point.lat]),
+            [currentPosition.lng, currentPosition.lat]
+        ];
+
+        const trailId = `trail-${mmsi}`;
+        const trailGlowId = `trail-glow-${mmsi}`;
+
+        // Remove existing trail if any
+        removeTrail(mmsi);
+
+        // Create GeoJSON for the trail
+        const trailGeoJSON = {
+            type: 'Feature',
+            geometry: {
+                type: 'LineString',
+                coordinates: coordinates
+            },
+            properties: {
+                mmsi: mmsi
+            }
+        };
+
+        // Add source
+        map.addSource(trailId, {
+            type: 'geojson',
+            data: trailGeoJSON
+        });
+
+        // Add glow layer
+        map.addLayer({
+            id: trailGlowId,
+            type: 'line',
+            source: trailId,
+            layout: {
+                'line-join': 'round',
+                'line-cap': 'round'
+            },
+            paint: {
+                'line-color': color.hex,
+                'line-width': 6,
+                'line-opacity': 0.3,
+                'line-blur': 4
+            }
+        });
+
+        // Add main trail line
+        map.addLayer({
+            id: trailId,
+            type: 'line',
+            source: trailId,
+            layout: {
+                'line-join': 'round',
+                'line-cap': 'round'
+            },
+            paint: {
+                'line-color': color.hex,
+                'line-width': 2,
+                'line-opacity': 0.8,
+                'line-dasharray': [2, 1]
+            }
+        });
+
+        // Store trail reference
+        vesselTrails[mmsi] = { trailId, trailGlowId };
+
+        console.log(`Drew trail for vessel ${mmsi} with ${history.length} points`);
+    }
+
+    // Remove vessel trail from map
+    function removeTrail(mmsi) {
+        if (vesselTrails[mmsi]) {
+            const { trailId, trailGlowId } = vesselTrails[mmsi];
+
+            if (map.getLayer(trailId)) {
+                map.removeLayer(trailId);
+            }
+            if (map.getLayer(trailGlowId)) {
+                map.removeLayer(trailGlowId);
+            }
+            if (map.getSource(trailId)) {
+                map.removeSource(trailId);
+            }
+
+            delete vesselTrails[mmsi];
+        }
+    }
+
+    // Remove specific tracked vessel
+    function removeTrackedVessel(mmsi) {
+        // Remove marker
+        if (trackedVesselMarkers[mmsi]) {
+            trackedVesselMarkers[mmsi].remove();
+            delete trackedVesselMarkers[mmsi];
+        }
+
+        // Remove trail
+        removeTrail(mmsi);
+
+        console.log(`Removed tracked vessel: ${mmsi}`);
+    }
+
+    // Clear all tracked vessels
+    function clearAllTrackedVessels() {
+        // Remove all markers
+        Object.keys(trackedVesselMarkers).forEach(mmsi => {
+            trackedVesselMarkers[mmsi].remove();
+        });
+        trackedVesselMarkers = {};
+
+        // Remove all trails
+        Object.keys(vesselTrails).forEach(mmsi => {
+            removeTrail(mmsi);
+        });
+
+        console.log('Cleared all tracked vessels');
+    }
+
+    // Get infrastructure data for proximity checking
+    function getInfrastructure() {
+        return infrastructureMarkers.map(m => m.feature);
+    }
+
     // Public API
     return {
         init,
         plotVessels,
         focusOnVessel,
-        clearMarkers
+        clearMarkers,
+        toggleInfrastructure,
+        toggleSubmarineCables,
+        updateTrackedVessel,
+        removeTrackedVessel,
+        clearAllTrackedVessels,
+        getInfrastructure
     };
 })();
+
+// Make it globally accessible
+window.MapModule = MapModule;

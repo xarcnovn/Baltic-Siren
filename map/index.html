@@ -26,6 +26,7 @@
             <div class="header-right">
                 <span class="status-indicator">● LIVE</span>
                 <span class="timestamp" id="timestamp"></span>
+                <button class="settings-icon" id="settings-icon" title="API Usage & Settings">⚙️</button>
             </div>
         </header>
 
@@ -33,6 +34,26 @@
         <div class="main-content">
             <!-- Left Sidebar - Operations List -->
             <aside class="sidebar sidebar-left">
+                <div class="panel">
+                    <div class="panel-header">VESSEL ACTIVITY</div>
+                    <div class="panel-content" id="vessel-activity">
+                        <div class="stat-grid">
+                            <div class="stat-item">
+                                <div class="stat-label">TOTAL</div>
+                                <div class="stat-value" id="total-vessels">0</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">TRACKED</div>
+                                <div class="stat-value" id="tracked-vessels">0</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">HIGH RISK</div>
+                                <div class="stat-value high-risk" id="high-risk-vessels">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="panel">
                     <div class="panel-header">
                         OPERATIONS LIST (<span id="vessel-count">0</span>)
@@ -63,31 +84,54 @@
 
             <!-- Right Sidebar - Vessel Details -->
             <aside class="sidebar sidebar-right">
+                <!-- Layer Toggles -->
+                <div class="panel">
+                    <div class="layer-toggle" style="margin-bottom: 5px;">
+                        <button class="filter-btn active" id="infrastructure-toggle" style="width: 100%;">
+                            🏗️ INFRASTRUCTURE
+                        </button>
+                    </div>
+                    <div class="layer-toggle">
+                        <button class="filter-btn active" id="cables-toggle" style="width: 100%;">
+                            ⚡ SUBMARINE CABLES
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tracking Panel -->
+                <div class="panel" id="tracking-panel" style="display: none;">
+                    <div class="panel-header">
+                        <span id="tracking-status">● TRACKING</span>
+                    </div>
+                    <div class="panel-content">
+                        <div class="tracking-info">
+                            <div class="detail-row">
+                                <span class="detail-label">Vessel:</span>
+                                <span class="detail-value" id="tracked-vessel-name">--</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label" id="last-update-time">Last update: --</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label" id="next-update-countdown">Next update in --</span>
+                            </div>
+                            <button class="tracking-btn stop-btn" id="stop-tracking-btn">⏹ STOP TRACKING</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Proximity Alerts -->
+                <div class="panel" id="proximity-alerts-panel" style="display: none;">
+                    <div class="panel-header">⚠️ PROXIMITY ALERTS</div>
+                    <div class="panel-content" id="proximity-alerts">
+                    </div>
+                </div>
+
                 <div class="panel">
                     <div class="panel-header">VESSEL DETAILS</div>
                     <div class="panel-content" id="vessel-details">
                         <div class="no-selection">
                             <p>Select a vessel on the map to view detailed intelligence.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="panel">
-                    <div class="panel-header">VESSEL ACTIVITY</div>
-                    <div class="panel-content" id="vessel-activity">
-                        <div class="stat-grid">
-                            <div class="stat-item">
-                                <div class="stat-label">TOTAL</div>
-                                <div class="stat-value" id="total-vessels">0</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-label">TRACKED</div>
-                                <div class="stat-value" id="tracked-vessels">0</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-label">HIGH RISK</div>
-                                <div class="stat-value high-risk" id="high-risk-vessels">0</div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -105,9 +149,57 @@
         </footer>
     </div>
 
+    <!-- Settings Panel -->
+    <div class="settings-panel" id="settings-panel" style="display: none;">
+        <div class="settings-header">
+            <span>⚙️ API USAGE & SETTINGS</span>
+            <button class="close-btn" id="close-settings">✕</button>
+        </div>
+        <div class="settings-content">
+            <div class="settings-section">
+                <div class="settings-title">API Credits</div>
+                <div class="usage-stats">
+                    <div class="usage-row">
+                        <span class="usage-label">Total Credits:</span>
+                        <span class="usage-value" id="credits-total">20,000</span>
+                    </div>
+                    <div class="usage-row">
+                        <span class="usage-label">Used:</span>
+                        <span class="usage-value used" id="credits-used">--</span>
+                    </div>
+                    <div class="usage-row">
+                        <span class="usage-label">Remaining:</span>
+                        <span class="usage-value remaining" id="credits-remaining">--</span>
+                    </div>
+                </div>
+                <div class="usage-last-updated" id="usage-last-updated">Click refresh to load</div>
+                <button class="refresh-btn" id="refresh-usage">🔄 REFRESH USAGE</button>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-title">Tracking Settings</div>
+                <div class="tracking-config">
+                    <div class="config-row">
+                        <span class="config-label">Refresh Rate:</span>
+                        <span class="config-value">60 minutes</span>
+                    </div>
+                    <div class="config-row">
+                        <span class="config-label">Proximity Radius:</span>
+                        <span class="config-value">10 km</span>
+                    </div>
+                    <div class="config-row">
+                        <span class="config-label">Est. Daily Usage:</span>
+                        <span class="config-value">~48 credits/day</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript -->
     <script src="js/map.js"></script>
     <script src="js/ui.js"></script>
+    <script src="js/tracker.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

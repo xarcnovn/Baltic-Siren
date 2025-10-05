@@ -1,0 +1,1123 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            15.908662966093944,
+            56.74380010331269
+          ],
+          [
+            16.08756283935933,
+            56.593792978418996
+          ],
+          [
+            16.20006275966344,
+            56.34522292681988
+          ],
+          [
+            16.312562679967364,
+            56.03221697111693
+          ],
+          [
+            17.325061962703444,
+            55.716652093821786
+          ],
+          [
+            20.475059731215417,
+            55.716652093821786
+          ],
+          [
+            21.149959253110477,
+            55.695748609598844
+          ]
+        ]
+      },
+      "properties": {
+        "name": "NordBalt",
+        "category": "cable",
+        "cable_type": "power",
+        "color": "#7b439a",
+        "type": "HVDC Submarine Power Cable",
+        "criticality": "critical",
+        "status": "operational",
+        "operator": "N/A",
+        "length": "N/A",
+        "details": "NordBalt submarine cable in the Baltic Sea region.",
+        "landing_points": "N/A",
+        "commissioned": "N/A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            24.932476573539617,
+            60.171163188940554
+          ],
+          [
+            24.412556941855435,
+            59.7364093840784
+          ],
+          [
+            23.850057340335432,
+            59.62282176941042
+          ],
+          [
+            23.1750578185115,
+            59.45171731890513
+          ],
+          [
+            22.275058456079353,
+            59.222223914844314
+          ],
+          [
+            21.15005925303935,
+            58.641677771385005
+          ],
+          [
+            20.250059890607382,
+            57.57189027900508
+          ],
+          [
+            19.125060687567377,
+            56.469711376547025
+          ],
+          [
+            17.325061962703444,
+            55.84318584148108
+          ],
+          [
+            15.30006339723147,
+            55.58970711313177
+          ],
+          [
+            14.400064034799321,
+            55.33458061322904
+          ],
+          [
+            13.500064672367355,
+            54.94878902385559
+          ],
+          [
+            12.600065309935387,
+            54.68951871778461
+          ],
+          [
+            12.150065628719313,
+            54.29748595281839
+          ],
+          [
+            12.037565708415386,
+            54.16597178715178
+          ],
+          [
+            12.132485641173277,
+            54.0791774165702
+          ]
+        ]
+      },
+      "properties": {
+        "name": "C-Lion1",
+        "category": "cable",
+        "cable_type": "data",
+        "color": "#7dc042",
+        "type": "Submarine Fiber Optic Cable",
+        "criticality": "high",
+        "status": "operational",
+        "operator": "N/A",
+        "length": "N/A",
+        "details": "C-Lion1 submarine cable in the Baltic Sea region.",
+        "landing_points": "N/A",
+        "commissioned": "N/A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            13.828284439853466,
+            55.431331650943825
+          ],
+          [
+            13.950064353583429,
+            55.33458061322904
+          ],
+          [
+            14.400064034799321,
+            55.0133467567921
+          ],
+          [
+            14.850063716015397,
+            55.0133467567921
+          ],
+          [
+            14.992153615357688,
+            55.031146415148456
+          ],
+          [
+            15.075063556623434,
+            54.884127437867534
+          ],
+          [
+            15.412563317535398,
+            54.55925876578231
+          ],
+          [
+            15.57506320241889,
+            54.172633544902844
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Baltica",
+        "category": "cable",
+        "cable_type": "data",
+        "color": "#5f459b",
+        "type": "Submarine Fiber Optic Cable",
+        "criticality": "high",
+        "status": "operational",
+        "operator": "N/A",
+        "length": "N/A",
+        "details": "Baltica submarine cable in the Baltic Sea region.",
+        "landing_points": "N/A",
+        "commissioned": "N/A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            21.08267930077222,
+            56.028506850473754
+          ],
+          [
+            20.700059571823456,
+            56.15772578558828
+          ],
+          [
+            19.125060687567377,
+            57.32978111682831
+          ],
+          [
+            18.829450896980287,
+            57.43973589319185
+          ]
+        ]
+      },
+      "properties": {
+        "name": "BCS East-West Interlink",
+        "category": "cable",
+        "cable_type": "data",
+        "color": "#348bcb",
+        "type": "Submarine Fiber Optic Cable",
+        "criticality": "high",
+        "status": "operational",
+        "operator": "N/A",
+        "length": "N/A",
+        "details": "BCS East-West Interlink submarine cable in the Baltic Sea region.",
+        "landing_points": "N/A",
+        "commissioned": "N/A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            24.932476573539617,
+            60.171163188940554
+          ],
+          [
+            24.412556941855435,
+            59.906069924574304
+          ],
+          [
+            23.850057340335432,
+            59.79305890746809
+          ],
+          [
+            22.966757966073065,
+            59.82340864139905
+          ],
+          [
+            22.6125582169915,
+            59.906069924574304
+          ],
+          [
+            22.275058456079353,
+            60.01869762196877
+          ],
+          [
+            22.298598439403605,
+            60.30575443116903
+          ],
+          [
+            22.050058615471496,
+            60.07486799642317
+          ],
+          [
+            21.375059093647387,
+            59.84961238502145
+          ],
+          [
+            20.250059890607382,
+            59.7364093840784
+          ],
+          [
+            19.912560129695414,
+            59.9624316341522
+          ],
+          [
+            19.937760111843488,
+            60.11403575461426
+          ],
+          [
+            19.68756028908738,
+            59.9624316341522
+          ],
+          [
+            19.125060687567377,
+            59.62282176941042
+          ],
+          [
+            18.688360996929806,
+            59.292766765691574
+          ]
+        ]
+      },
+      "properties": {
+        "name": "BCS North - Phase 1",
+        "category": "cable",
+        "cable_type": "data",
+        "color": "#38b77b",
+        "type": "Submarine Fiber Optic Cable",
+        "criticality": "high",
+        "status": "operational",
+        "operator": "N/A",
+        "length": "N/A",
+        "details": "BCS North - Phase 1 submarine cable in the Baltic Sea region.",
+        "landing_points": "N/A",
+        "commissioned": "N/A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            26.88364519131359,
+            60.50114125320089
+          ],
+          [
+            27.00005510884741,
+            60.35428947498098
+          ],
+          [
+            27.16880498930348,
+            60.13094286609847
+          ],
+          [
+            27.450054790063483,
+            59.9624316341522
+          ],
+          [
+            28.12505431188741,
+            59.84961238502145
+          ],
+          [
+            28.49995404630509,
+            59.79998620949299
+          ]
+        ]
+      },
+      "properties": {
+        "name": "BCS North - Phase 2",
+        "category": "cable",
+        "cable_type": "data",
+        "color": "#b1d235",
+        "type": "Submarine Fiber Optic Cable",
+        "criticality": "high",
+        "status": "operational",
+        "operator": "N/A",
+        "length": "N/A",
+        "details": "BCS North - Phase 2 submarine cable in the Baltic Sea region.",
+        "landing_points": "N/A",
+        "commissioned": "N/A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            24.752496701038964,
+            59.43639985926234
+          ],
+          [
+            24.412556941855435,
+            59.50884868221247
+          ],
+          [
+            23.850057340335432,
+            59.45171731890513
+          ],
+          [
+            23.1750578185115,
+            59.222223914844314
+          ],
+          [
+            22.736388129269244,
+            59.000082835046605
+          ],
+          [
+            22.050058615471496,
+            59.106894957190725
+          ],
+          [
+            20.250059890607382,
+            59.27974267096037
+          ],
+          [
+            18.900060846959338,
+            59.27974267096037
+          ],
+          [
+            18.688360996929806,
+            59.292766765691574
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Sweden-Estonia (EE-S 1)",
+        "category": "cable",
+        "cable_type": "data",
+        "color": "#e23825",
+        "type": "Submarine Fiber Optic Cable",
+        "criticality": "high",
+        "status": "operational",
+        "operator": "N/A",
+        "length": "N/A",
+        "details": "Sweden-Estonia (EE-S 1) submarine cable in the Baltic Sea region.",
+        "landing_points": "N/A",
+        "commissioned": "N/A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            21.375059093647387,
+            59.5373781389088
+          ],
+          [
+            20.250059890607382,
+            59.45171731890513
+          ],
+          [
+            18.900060846959338,
+            59.33716441962142
+          ],
+          [
+            18.062761440110208,
+            59.33230901818709
+          ],
+          [
+            18.900060846959338,
+            59.3944892668567
+          ],
+          [
+            20.250059890607382,
+            59.50884868221247
+          ],
+          [
+            21.375059093647387,
+            59.62282176941042
+          ],
+          [
+            23.850057340335432,
+            59.679663707208995
+          ],
+          [
+            24.412556941855435,
+            59.79305890746809
+          ],
+          [
+            24.932476573539617,
+            60.171163188940554
+          ],
+          [
+            24.91880658322347,
+            60.07486799642317
+          ],
+          [
+            24.86255662307151,
+            59.9624316341522
+          ],
+          [
+            24.7500567027674,
+            59.679663707208995
+          ],
+          [
+            24.752496701038964,
+            59.43639985926234
+          ],
+          [
+            24.412556941855435,
+            59.56588346342965
+          ],
+          [
+            23.850057340335432,
+            59.56588346342965
+          ],
+          [
+            21.375059093647387,
+            59.5373781389088
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Baltic Sea Submarine Cable",
+        "category": "cable",
+        "cable_type": "data",
+        "color": "#2fbfcc",
+        "type": "Submarine Fiber Optic Cable",
+        "criticality": "high",
+        "status": "operational",
+        "operator": "N/A",
+        "length": "N/A",
+        "details": "Baltic Sea Submarine Cable submarine cable in the Baltic Sea region.",
+        "landing_points": "N/A",
+        "commissioned": "N/A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            21.011189351416185,
+            56.50836914088424
+          ],
+          [
+            20.812559492127384,
+            56.407518054312945
+          ],
+          [
+            20.812559492127384,
+            56.15772578558828
+          ],
+          [
+            21.08267930077222,
+            56.028506850473754
+          ]
+        ]
+      },
+      "properties": {
+        "name": "BCS East",
+        "category": "cable",
+        "cable_type": "data",
+        "color": "#bc6f29",
+        "type": "Submarine Fiber Optic Cable",
+        "criticality": "high",
+        "status": "operational",
+        "operator": "N/A",
+        "length": "N/A",
+        "details": "BCS East submarine cable in the Baltic Sea region.",
+        "landing_points": "N/A",
+        "commissioned": "N/A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            24.75,
+            59.44
+          ],
+          [
+            24.72,
+            59.5
+          ],
+          [
+            24.68,
+            59.56
+          ],
+          [
+            24.64,
+            59.62
+          ],
+          [
+            24.6,
+            59.68
+          ],
+          [
+            24.56,
+            59.74
+          ],
+          [
+            24.53,
+            59.8
+          ],
+          [
+            24.51,
+            59.86
+          ],
+          [
+            24.5,
+            59.92
+          ],
+          [
+            24.52,
+            59.98
+          ],
+          [
+            24.56,
+            60.04
+          ],
+          [
+            24.62,
+            60.09
+          ],
+          [
+            24.7,
+            60.13
+          ],
+          [
+            24.8,
+            60.15
+          ],
+          [
+            24.94,
+            60.17
+          ]
+        ]
+      },
+      "properties": {
+        "name": "EstLink 1",
+        "category": "cable",
+        "cable_type": "power",
+        "type": "HVDC Submarine Power Cable",
+        "length": "105 km",
+        "status": "operational",
+        "operator": "Elering (EE) / Fingrid (FI)",
+        "landing_points": "Tallinn (EE) \u2192 Helsinki (FI)",
+        "capacity": "350 MW",
+        "details": "First electricity interconnection between Estonia and Finland, operational since 2006. 150 kV DC submarine cable.",
+        "criticality": "critical",
+        "commissioned": "2006"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            26.95,
+            59.38
+          ],
+          [
+            26.7,
+            59.42
+          ],
+          [
+            26.45,
+            59.46
+          ],
+          [
+            26.2,
+            59.5
+          ],
+          [
+            25.95,
+            59.55
+          ],
+          [
+            25.7,
+            59.6
+          ],
+          [
+            25.45,
+            59.66
+          ],
+          [
+            25.2,
+            59.72
+          ],
+          [
+            25.0,
+            59.78
+          ],
+          [
+            24.85,
+            59.84
+          ],
+          [
+            24.7,
+            59.9
+          ],
+          [
+            24.6,
+            59.96
+          ],
+          [
+            24.55,
+            60.02
+          ],
+          [
+            24.6,
+            60.08
+          ],
+          [
+            24.7,
+            60.13
+          ],
+          [
+            24.85,
+            60.15
+          ],
+          [
+            24.94,
+            60.17
+          ]
+        ]
+      },
+      "properties": {
+        "name": "EstLink 2",
+        "category": "cable",
+        "cable_type": "power",
+        "type": "HVDC Submarine Power Cable",
+        "length": "170 km",
+        "status": "operational",
+        "operator": "Elering (EE) / Fingrid (FI)",
+        "landing_points": "P\u00fcssi (EE) \u2192 Anttila (FI)",
+        "capacity": "650 MW",
+        "details": "Second Estonia-Finland power interconnection, operational since 2014. Higher capacity than EstLink 1.",
+        "criticality": "critical",
+        "commissioned": "2014"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            14.25,
+            53.92
+          ],
+          [
+            14.3,
+            54.05
+          ],
+          [
+            14.35,
+            54.18
+          ],
+          [
+            14.4,
+            54.31
+          ],
+          [
+            14.45,
+            54.44
+          ],
+          [
+            14.52,
+            54.57
+          ],
+          [
+            14.6,
+            54.7
+          ],
+          [
+            14.68,
+            54.82
+          ],
+          [
+            14.78,
+            54.94
+          ],
+          [
+            14.9,
+            55.05
+          ],
+          [
+            15.02,
+            55.16
+          ],
+          [
+            15.15,
+            55.26
+          ],
+          [
+            15.28,
+            55.36
+          ],
+          [
+            15.42,
+            55.45
+          ],
+          [
+            15.56,
+            55.54
+          ],
+          [
+            15.7,
+            55.62
+          ],
+          [
+            15.85,
+            55.7
+          ],
+          [
+            16.0,
+            55.77
+          ],
+          [
+            16.15,
+            55.84
+          ],
+          [
+            16.3,
+            55.9
+          ],
+          [
+            16.45,
+            55.95
+          ],
+          [
+            16.6,
+            56.0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "SwePol Link",
+        "category": "cable",
+        "cable_type": "power",
+        "type": "HVDC Submarine Power Cable",
+        "length": "254 km",
+        "status": "operational",
+        "operator": "Svenska Kraftn\u00e4t (SE) / PSE (PL)",
+        "landing_points": "\u015awinouj\u015bcie (PL) \u2192 Karlshamn (SE)",
+        "capacity": "600 MW",
+        "details": "Poland-Sweden power interconnection. Connects Polish grid to Nordic power system via Baltic Sea.",
+        "criticality": "critical",
+        "commissioned": "2000"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            22.22,
+            60.45
+          ],
+          [
+            22.15,
+            60.38
+          ],
+          [
+            22.05,
+            60.3
+          ],
+          [
+            21.95,
+            60.22
+          ],
+          [
+            21.85,
+            60.14
+          ],
+          [
+            21.75,
+            60.06
+          ],
+          [
+            21.65,
+            59.98
+          ],
+          [
+            21.55,
+            59.9
+          ],
+          [
+            21.45,
+            59.82
+          ],
+          [
+            21.35,
+            59.74
+          ],
+          [
+            21.25,
+            59.66
+          ],
+          [
+            21.15,
+            59.58
+          ],
+          [
+            21.05,
+            59.5
+          ],
+          [
+            20.95,
+            59.42
+          ],
+          [
+            20.85,
+            59.34
+          ],
+          [
+            20.75,
+            59.26
+          ],
+          [
+            20.65,
+            59.18
+          ],
+          [
+            20.55,
+            59.1
+          ],
+          [
+            20.45,
+            59.02
+          ],
+          [
+            20.35,
+            58.94
+          ],
+          [
+            20.25,
+            58.86
+          ],
+          [
+            20.15,
+            58.78
+          ],
+          [
+            20.05,
+            58.7
+          ],
+          [
+            19.95,
+            58.62
+          ],
+          [
+            19.85,
+            58.54
+          ],
+          [
+            19.75,
+            58.46
+          ],
+          [
+            19.65,
+            58.38
+          ],
+          [
+            19.55,
+            58.3
+          ],
+          [
+            19.45,
+            58.22
+          ],
+          [
+            19.35,
+            58.14
+          ],
+          [
+            19.25,
+            58.06
+          ],
+          [
+            19.15,
+            57.98
+          ],
+          [
+            19.05,
+            57.9
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Balticconnector",
+        "category": "cable",
+        "cable_type": "pipeline",
+        "type": "Offshore Gas Pipeline",
+        "length": "153 km",
+        "status": "damaged",
+        "operator": "Balticconnector Oy / Elering",
+        "landing_points": "Inkoo (FI) \u2192 Paldiski (EE)",
+        "capacity": "2.6 bcm/year",
+        "details": "Bi-directional natural gas pipeline between Finland and Estonia. Damaged in October 2023 (suspected sabotage by Chinese vessel). Under repair.",
+        "criticality": "critical",
+        "commissioned": "2020"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            18.5583,
+            54.5189
+          ],
+          [
+            18.65,
+            54.6
+          ],
+          [
+            18.75,
+            54.7
+          ],
+          [
+            18.85,
+            54.8
+          ],
+          [
+            18.95,
+            54.9
+          ],
+          [
+            19.05,
+            55.0
+          ],
+          [
+            19.15,
+            55.1
+          ],
+          [
+            19.25,
+            55.2
+          ],
+          [
+            19.35,
+            55.3
+          ],
+          [
+            19.45,
+            55.4
+          ],
+          [
+            19.55,
+            55.5
+          ],
+          [
+            19.65,
+            55.6
+          ],
+          [
+            19.75,
+            55.7
+          ],
+          [
+            19.85,
+            55.8
+          ],
+          [
+            19.95,
+            55.9
+          ],
+          [
+            20.05,
+            56.0
+          ],
+          [
+            20.15,
+            56.1
+          ],
+          [
+            20.25,
+            56.2
+          ],
+          [
+            20.35,
+            56.3
+          ],
+          [
+            20.45,
+            56.4
+          ],
+          [
+            20.55,
+            56.5
+          ],
+          [
+            20.65,
+            56.6
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Poland-Lithuania Interconnector",
+        "category": "cable",
+        "cable_type": "power",
+        "type": "HVDC Submarine Power Cable",
+        "length": "250 km",
+        "status": "operational",
+        "operator": "PSE (PL) / Litgrid (LT)",
+        "landing_points": "Gdynia (PL) \u2192 Klaip\u0117da (LT)",
+        "capacity": "500 MW",
+        "details": "Power interconnection linking Polish and Lithuanian electricity grids across the Baltic Sea.",
+        "criticality": "critical",
+        "commissioned": "2016"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [12.25, 55.17],
+          [13.50, 55.10],
+          [14.20, 55.05],
+          [14.80, 54.95],
+          [15.10, 54.85],
+          [15.20, 54.50],
+          [15.25, 54.10],
+          [15.26, 53.80]
+        ]
+      },
+      "properties": {
+        "name": "Baltic Pipe",
+        "category": "cable",
+        "cable_type": "pipeline",
+        "type": "Offshore Gas Pipeline",
+        "length": "275 km",
+        "status": "operational",
+        "operator": "Gaz-System (PL) / Energinet (DK)",
+        "landing_points": "Faxe Bugt (DK) → Niechorze-Pogorzelica (PL)",
+        "capacity": "10 bcm/year",
+        "details": "Critical gas pipeline connecting Norway to Poland via Denmark. 275km offshore section passes south of Bornholm. Operational since September 2022, part of Poland's energy independence strategy.",
+        "criticality": "critical",
+        "commissioned": "2022"
+      }
+    }
+  ]
+}

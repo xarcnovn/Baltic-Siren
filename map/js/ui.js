@@ -24,7 +24,7 @@ const UIModule = (function() {
         });
 
         // Filter buttons
-        const filterButtons = document.querySelectorAll('.filter-btn');
+        const filterButtons = document.querySelectorAll('.filter-btn[data-filter]');
         filterButtons.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 // Update active state
@@ -36,6 +36,36 @@ const UIModule = (function() {
                 filterVessels();
             });
         });
+
+        // Infrastructure toggle button
+        const infrastructureToggle = document.getElementById('infrastructure-toggle');
+        if (infrastructureToggle) {
+            infrastructureToggle.addEventListener('click', () => {
+                if (window.MapModule && typeof window.MapModule.toggleInfrastructure === 'function') {
+                    const isVisible = window.MapModule.toggleInfrastructure();
+                    if (isVisible) {
+                        infrastructureToggle.classList.add('active');
+                    } else {
+                        infrastructureToggle.classList.remove('active');
+                    }
+                }
+            });
+        }
+
+        // Submarine cables toggle button
+        const cablesToggle = document.getElementById('cables-toggle');
+        if (cablesToggle) {
+            cablesToggle.addEventListener('click', () => {
+                if (window.MapModule && typeof window.MapModule.toggleSubmarineCables === 'function') {
+                    const isVisible = window.MapModule.toggleSubmarineCables();
+                    if (isVisible) {
+                        cablesToggle.classList.add('active');
+                    } else {
+                        cablesToggle.classList.remove('active');
+                    }
+                }
+            });
+        }
     }
 
     // Update timestamp
@@ -136,6 +166,9 @@ const UIModule = (function() {
     function showVesselDetails(vessel) {
         const detailsPanel = document.getElementById('vessel-details');
 
+        // Store current vessel data for tracking
+        detailsPanel.dataset.currentVessel = JSON.stringify(vessel);
+
         const sanctionsHtml = vessel.sanctions && vessel.sanctions.length > 0
             ? `<ul class="sanctions-list">${vessel.sanctions.map(s => `<li>${s}</li>`).join('')}</ul>`
             : '<p style="color: #00aa00;">No specific sanctions listed</p>';
@@ -165,6 +198,7 @@ const UIModule = (function() {
                     <span class="detail-label">Category:</span>
                     <span class="detail-value">${vessel.category || 'N/A'}</span>
                 </div>
+                <button class="tracking-btn" id="start-tracking-btn">📍 TRACK THIS VESSEL</button>
             </div>
 
             <div class="detail-section">
@@ -179,12 +213,23 @@ const UIModule = (function() {
         `;
 
         selectVesselInList(vessel.IMO);
+
+        // Re-attach tracking button event listener
+        const trackBtn = document.getElementById('start-tracking-btn');
+        if (trackBtn && window.TrackerModule) {
+            trackBtn.addEventListener('click', () => {
+                window.TrackerModule.startTracking(vessel);
+            });
+        }
     }
 
     // Update statistics
     function updateStats() {
         document.getElementById('total-vessels').textContent = allVessels.length;
-        document.getElementById('tracked-vessels').textContent = filteredVessels.length;
+
+        // Get actual tracked vessels count from TrackerModule
+        const trackedCount = window.TrackerModule ? window.TrackerModule.getTrackedVessels().length : 0;
+        document.getElementById('tracked-vessels').textContent = trackedCount;
 
         // Count high-risk vessels (those with sanctions)
         const highRisk = allVessels.filter(v => v.sanctions && v.sanctions.length > 0).length;
@@ -196,7 +241,8 @@ const UIModule = (function() {
         init,
         loadVessels,
         showVesselDetails,
-        selectVesselInList
+        selectVesselInList,
+        updateStats
     };
 })();
 

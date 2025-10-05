@@ -1,0 +1,309 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [18.6466, 54.3520]
+      },
+      "properties": {
+        "name": "Port of Gdańsk",
+        "category": "port",
+        "type": "Maritime Infrastructure",
+        "capacity": "81M tonnes/year (2023)",
+        "status": "operational",
+        "details": "Largest Baltic Sea port, main container hub, handles 2.05M TEU containers, 3,500+ ships annually",
+        "criticality": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [18.5583, 54.5189]
+      },
+      "properties": {
+        "name": "Port of Gdynia",
+        "category": "port",
+        "type": "Maritime Infrastructure",
+        "capacity": "Major container/cargo hub",
+        "status": "operational",
+        "details": "Strategic Baltic Sea port, handles containers, bulk cargo, and roll-on/roll-off vessels",
+        "criticality": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [14.5528, 53.4289]
+      },
+      "properties": {
+        "name": "Port of Szczecin",
+        "category": "port",
+        "type": "Maritime Infrastructure",
+        "capacity": "35.3M tonnes/year (combined with Świnoujście)",
+        "status": "operational",
+        "details": "Part of Szczecin-Świnoujście port complex, handles iron ore, fertilizers, agricultural products, fuel",
+        "criticality": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [14.2478, 53.9175]
+      },
+      "properties": {
+        "name": "Port of Świnoujście",
+        "category": "port",
+        "type": "Maritime Infrastructure",
+        "capacity": "35.3M tonnes/year (combined with Szczecin)",
+        "status": "operational",
+        "details": "Deep-water port, part of Szczecin-Świnoujście complex, strategic energy gateway",
+        "criticality": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [18.5583, 54.5189]
+      },
+      "properties": {
+        "name": "Gdynia Naval Base",
+        "category": "naval",
+        "type": "Military Infrastructure",
+        "capacity": "Main Polish Navy base",
+        "status": "operational",
+        "details": "Primary naval base with advanced docking facilities, repair workshops, storage warehouses, communication centers",
+        "criticality": "critical"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [18.5500, 54.5200]
+      },
+      "properties": {
+        "name": "Naval Academy Gdynia",
+        "category": "naval",
+        "type": "Military Training",
+        "capacity": "Naval officer training",
+        "status": "operational",
+        "details": "Premier institution for training future Polish naval officers and maintaining operational readiness",
+        "criticality": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [14.2697, 53.9069]
+      },
+      "properties": {
+        "name": "Świnoujście LNG Terminal",
+        "category": "energy",
+        "type": "LNG Import Terminal",
+        "capacity": "Imports from Middle East & US",
+        "status": "operational",
+        "details": "Critical LNG terminal reducing dependency on Russian gas, part of Poland's energy security strategy",
+        "criticality": "critical"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [18.7800, 54.3700]
+      },
+      "properties": {
+        "name": "Gdańsk LNG Terminal",
+        "category": "energy",
+        "type": "LNG Import Terminal (Planned)",
+        "capacity": "Expected 2028",
+        "status": "construction",
+        "details": "New LNG terminal under development to further diversify Poland's gas supply",
+        "criticality": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [17.6500, 55.0500]
+      },
+      "properties": {
+        "name": "Baltic Power Offshore Wind Farm",
+        "category": "energy",
+        "type": "Offshore Wind Farm",
+        "capacity": "1.14 GW (76 × Vestas V236/15MW turbines)",
+        "status": "construction",
+        "details": "Poland's first offshore wind farm, 28km offshore near Choczewo/Łeba, water depth -40m, commissioning 2026, covers 3% national electricity demand",
+        "criticality": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [17.5450, 54.7575]
+      },
+      "properties": {
+        "name": "Łeba O&M Base",
+        "category": "energy",
+        "type": "Offshore Wind Support",
+        "capacity": "O&M for 30 years",
+        "status": "operational",
+        "details": "Poland's first offshore wind operations & maintenance base supporting Baltic Power for its 30-year lifecycle",
+        "criticality": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [14.3200, 53.9100]
+      },
+      "properties": {
+        "name": "Wolin East Oil Field",
+        "category": "energy",
+        "type": "Oil & Gas Field",
+        "capacity": "22M tonnes oil, 5B m³ gas",
+        "status": "discovered",
+        "details": "Largest conventional oil field in Poland, 6km from Świnoujście, discovered recently",
+        "criticality": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [18.0500, 55.6000]
+      },
+      "properties": {
+        "name": "B3 Oil Field",
+        "category": "energy",
+        "type": "Offshore Oil Field",
+        "capacity": "5M tonnes extracted (31 years operation)",
+        "status": "operational",
+        "details": "Poland's first offshore oil field, 80km north of Rozewie, Baltic Beta jack-up rig, oil depth 1,450m below seabed, sea depth 80m, operated by ORLEN Petrobaltic",
+        "criticality": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [18.7175, 55.4000]
+      },
+      "properties": {
+        "name": "B8 Oil Field",
+        "category": "energy",
+        "type": "Offshore Oil Field",
+        "capacity": "4% of Poland's oil production",
+        "status": "operational",
+        "details": "70km north of Jastarnia, LOTOS Petrobaltic platform, producing since 2006",
+        "criticality": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [15.26, 53.80]
+      },
+      "properties": {
+        "name": "Baltic Pipe - Niechorze Landing Point",
+        "category": "pipeline",
+        "type": "Gas Pipeline Landing",
+        "capacity": "10 bcm/year Norway→Poland",
+        "status": "operational",
+        "details": "Coastal landing point at Niechorze-Pogorzelica where Baltic Pipe comes ashore from Denmark",
+        "criticality": "critical"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [14.9500, 53.5600]
+      },
+      "properties": {
+        "name": "Baltic Pipe - Goleniów Compressor Station",
+        "category": "pipeline",
+        "type": "Gas Pipeline Infrastructure",
+        "capacity": "10 bcm/year Norway→Poland",
+        "status": "operational",
+        "details": "Inland compressor station for 275km Baltic Sea section from Denmark, operational since Sept 2022",
+        "criticality": "critical"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [17.9400, 51.4000]
+      },
+      "properties": {
+        "name": "Baltic Pipe - Odolanów Compressor",
+        "category": "pipeline",
+        "type": "Gas Compressor Station",
+        "capacity": "Part of 10 bcm/year system",
+        "status": "operational",
+        "details": "Key compressor station for Baltic Pipe gas transmission system",
+        "criticality": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [18.6500, 54.3500]
+      },
+      "properties": {
+        "name": "Gdańsk Cable Landing Station",
+        "category": "telecom",
+        "type": "Undersea Telecommunications",
+        "capacity": "Fiber optic cables",
+        "status": "operational",
+        "details": "Critical telecommunications infrastructure connecting Poland to Baltic Sea fiber optic cable network",
+        "criticality": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [14.2800, 53.9200]
+      },
+      "properties": {
+        "name": "Świnoujście Cable Landing",
+        "category": "telecom",
+        "type": "Undersea Telecommunications",
+        "capacity": "Poland-Sweden power cable",
+        "status": "operational",
+        "details": "Landing point for Poland-Sweden power cable and fiber optic segments",
+        "criticality": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [14.3000, 53.9300]
+      },
+      "properties": {
+        "name": "Świnoujście Container Terminal",
+        "category": "port",
+        "type": "Deep-Water Container Terminal",
+        "capacity": "Under development",
+        "status": "construction",
+        "details": "Major deep-water container terminal project to increase Szczecin-Świnoujście port complex capacity",
+        "criticality": "medium"
+      }
+    }
+  ]
+}

@@ -195,24 +195,24 @@ body::before {
 .stat-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 5px;
 }
 
 .stat-item {
     text-align: center;
-    padding: 15px 10px;
+    padding: 8px 5px;
     border: 1px solid var(--text-muted);
     background: rgba(0, 255, 0, 0.05);
 }
 
 .stat-label {
-    font-size: 10px;
+    font-size: 9px;
     color: var(--text-muted);
-    margin-bottom: 5px;
+    margin-bottom: 3px;
 }
 
 .stat-value {
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 700;
     color: var(--text-primary);
 }
@@ -497,9 +497,7 @@ body::before {
     z-index: 10000;
     pointer-events: none;
     font-family: var(--font-mono);
-    transform: translate(-50%, -100%);
     max-width: 280px;
-    margin-top: -5px;
 }
 
 .tooltip-photo {
@@ -532,6 +530,305 @@ body::before {
     color: var(--text-muted);
     display: inline-block;
     width: 45px;
+}
+
+/* Settings Icon & Credits Badge */
+.credits-badge {
+    padding: 4px 10px;
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid var(--text-muted);
+    color: var(--text-secondary);
+    font-size: 11px;
+    border-radius: 2px;
+}
+
+.settings-icon {
+    background: none;
+    border: 1px solid var(--text-muted);
+    color: var(--text-primary);
+    font-size: 16px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.settings-icon:hover {
+    border-color: var(--text-primary);
+    background: rgba(0, 255, 0, 0.1);
+    box-shadow: 0 0 5px var(--border-glow);
+}
+
+/* Settings Panel */
+.settings-panel {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    width: 400px;
+    background: rgba(10, 10, 10, 0.98);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 0 20px var(--border-glow);
+    z-index: 10000;
+    font-family: var(--font-mono);
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background: rgba(0, 255, 0, 0.1);
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--text-primary);
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    transition: all 0.2s;
+}
+
+.close-btn:hover {
+    color: var(--text-red);
+    transform: scale(1.2);
+}
+
+.settings-content {
+    padding: 15px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.settings-section {
+    margin-bottom: 20px;
+}
+
+.settings-title {
+    font-size: 11px;
+    color: var(--text-amber);
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.usage-stats {
+    background: rgba(0, 255, 0, 0.05);
+    border: 1px solid var(--text-muted);
+    padding: 12px;
+}
+
+.usage-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 12px;
+}
+
+.usage-label {
+    color: var(--text-muted);
+}
+
+.usage-value {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.usage-value.used {
+    color: var(--text-amber);
+}
+
+.usage-value.remaining {
+    color: var(--text-primary);
+}
+
+.usage-last-updated {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 10px;
+    text-align: center;
+}
+
+.refresh-btn {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    background: var(--bg-primary);
+    border: 1px solid var(--text-primary);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.refresh-btn:hover {
+    background: rgba(0, 255, 0, 0.2);
+    box-shadow: 0 0 5px var(--border-glow);
+}
+
+.tracking-config {
+    font-size: 11px;
+}
+
+.config-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding: 8px;
+    background: rgba(0, 255, 0, 0.05);
+    border-left: 2px solid var(--text-muted);
+}
+
+.config-label {
+    color: var(--text-muted);
+}
+
+.config-value {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Tracking Controls */
+.tracking-info {
+    font-size: 11px;
+}
+
+.tracking-btn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background: var(--bg-primary);
+    border: 1px solid var(--text-primary);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+}
+
+.tracking-btn:hover {
+    background: rgba(0, 255, 0, 0.2);
+    box-shadow: 0 0 8px var(--border-glow);
+}
+
+.tracking-btn.stop-btn {
+    border-color: var(--text-red);
+    color: var(--text-red);
+}
+
+.tracking-btn.stop-btn:hover {
+    background: rgba(255, 51, 51, 0.2);
+    box-shadow: 0 0 8px rgba(255, 51, 51, 0.3);
+}
+
+/* Proximity Alerts */
+.proximity-alert {
+    background: rgba(255, 170, 0, 0.1);
+    border-left: 3px solid var(--text-amber);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.alert-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-amber);
+    margin-bottom: 4px;
+}
+
+.alert-subtitle {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.alert-details {
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-bottom: 3px;
+}
+
+.alert-label {
+    color: var(--text-muted);
+    display: inline-block;
+    width: 70px;
+}
+
+/* Tracked Vessel Markers (multi-vessel colors) */
+.tracked-marker {
+    animation: pulse-marker 2s infinite;
+}
+
+@keyframes pulse-marker {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.15);
+    }
+}
+
+/* Multi-Vessel Tracking UI */
+.tracked-vessel-item {
+    background: rgba(0, 255, 0, 0.05);
+    border-left: 3px solid var(--text-primary);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.tracked-vessel-name {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.tracked-vessel-meta {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.tracked-vessel-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.tracking-action-btn {
+    flex: 1;
+    padding: 6px 8px;
+    background: var(--bg-primary);
+    border: 1px solid var(--text-muted);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tracking-action-btn:hover {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+    background: rgba(0, 255, 0, 0.1);
+}
+
+.tracking-action-btn.stop-btn-small {
+    border-color: var(--text-red);
+    color: var(--text-red);
+}
+
+.tracking-action-btn.stop-btn-small:hover {
+    background: rgba(255, 51, 51, 0.1);
 }
 
 /* Responsive Design */
