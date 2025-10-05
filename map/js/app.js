@@ -19,8 +19,11 @@
             // Load vessel data
             await loadVesselData();
 
-            // Load vessels into UI (but don't plot on map - only tracked vessels appear)
+            // Load vessels into UI
             UIModule.loadVessels(vesselData);
+
+            // Auto-plot vessels with saved positions on map
+            plotVesselsWithPositions();
 
             console.log('Baltic Siren - Ready');
         } catch (error) {
@@ -47,6 +50,25 @@
             console.error('Error loading vessel data:', error);
             throw error;
         }
+    }
+
+    // Plot vessels with saved positions
+    function plotVesselsWithPositions() {
+        // Filter vessels that have position data
+        const vesselsWithPositions = vesselData.filter(v => v.position && v.position.lat && v.position.lon);
+
+        console.log(`Plotting ${vesselsWithPositions.length} vessels with saved positions...`);
+
+        // Plot on map
+        MapModule.plotVessels(vesselsWithPositions);
+
+        // Update stats
+        const plottedVesselsEl = document.getElementById('plotted-vessels');
+        if (plottedVesselsEl) {
+            plottedVesselsEl.textContent = vesselsWithPositions.length;
+        }
+
+        console.log(`✅ Plotted ${vesselsWithPositions.length} vessels on map`);
     }
 
     // Show error message

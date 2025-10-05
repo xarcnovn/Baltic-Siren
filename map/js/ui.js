@@ -3,7 +3,6 @@
 const UIModule = (function() {
     let allVessels = [];
     let filteredVessels = [];
-    let selectedFilter = 'all';
     let searchQuery = '';
 
     // Initialize UI
@@ -21,20 +20,6 @@ const UIModule = (function() {
         searchInput.addEventListener('input', (e) => {
             searchQuery = e.target.value.toLowerCase();
             filterVessels();
-        });
-
-        // Filter buttons
-        const filterButtons = document.querySelectorAll('.filter-btn[data-filter]');
-        filterButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                // Update active state
-                filterButtons.forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-
-                // Update filter
-                selectedFilter = e.target.dataset.filter;
-                filterVessels();
-            });
         });
 
         // Infrastructure toggle button
@@ -83,27 +68,14 @@ const UIModule = (function() {
         updateStats();
     }
 
-    // Filter vessels based on search and filter
+    // Filter vessels based on search
     function filterVessels() {
         filteredVessels = allVessels.filter(vessel => {
             // Search filter
-            const matchesSearch = searchQuery === '' ||
+            return searchQuery === '' ||
                 vessel.vessel_name?.toLowerCase().includes(searchQuery) ||
                 vessel.IMO?.toString().includes(searchQuery) ||
                 vessel.flag?.toLowerCase().includes(searchQuery);
-
-            // Type filter
-            let matchesType = true;
-            if (selectedFilter !== 'all') {
-                const vesselType = vessel.vessel_type?.toLowerCase() || '';
-                if (selectedFilter === 'tanker') {
-                    matchesType = vesselType.includes('tanker');
-                } else if (selectedFilter === 'cargo') {
-                    matchesType = vesselType.includes('cargo');
-                }
-            }
-
-            return matchesSearch && matchesType;
         });
 
         updateVesselList();
@@ -175,9 +147,14 @@ const UIModule = (function() {
 
         const vesselInfo = vessel.vessel_information || 'No additional intelligence available.';
 
+        const photoHtml = vessel.vessel_photo_url
+            ? `<img src="${vessel.vessel_photo_url}" alt="${vessel.vessel_name}" class="vessel-detail-photo" onerror="this.style.display='none'">`
+            : '';
+
         detailsPanel.innerHTML = `
             <div class="detail-section">
                 <div class="detail-title">${vessel.vessel_name || 'UNKNOWN VESSEL'}</div>
+                ${photoHtml}
                 <div class="detail-row">
                     <span class="detail-label">IMO:</span>
                     <span class="detail-value">${vessel.IMO || 'N/A'}</span>
@@ -231,9 +208,7 @@ const UIModule = (function() {
         const trackedCount = window.TrackerModule ? window.TrackerModule.getTrackedVessels().length : 0;
         document.getElementById('tracked-vessels').textContent = trackedCount;
 
-        // Count high-risk vessels (those with sanctions)
-        const highRisk = allVessels.filter(v => v.sanctions && v.sanctions.length > 0).length;
-        document.getElementById('high-risk-vessels').textContent = highRisk;
+        // Note: 'plotted-vessels' count is updated by plotVesselsWithPositions() in app.js
     }
 
     // Public API

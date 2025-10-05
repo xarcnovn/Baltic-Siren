@@ -13,22 +13,16 @@ const MapModule = (function() {
 
     // Initialize Mapbox map
     function init() {
-        // Baltic Sea bounds [west, south, east, north]
-        const balticBounds = [
-            [9.0, 53.0],  // Southwest coordinates
-            [31.0, 66.0]  // Northeast coordinates
-        ];
-
         map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/dark-v11',
-            center: [20.0, 58.0], // Baltic Sea center
+            center: [20.0, 58.0], // Baltic Sea center (default view)
             zoom: 5.5,
-            minZoom: 4,
+            minZoom: 2,
             maxZoom: 12,
             pitch: 0,
-            bearing: 0,
-            maxBounds: balticBounds // Restrict map to Baltic Sea region
+            bearing: 0
+            // No maxBounds - allow global vessel tracking
         });
 
         // Add navigation controls
@@ -262,6 +256,96 @@ const MapModule = (function() {
         `;
     }
 
+    // Create static marker element for batch-loaded vessels
+    function createStaticMarkerElement(vessel) {
+        const el = document.createElement('div');
+        el.className = 'vessel-marker static-marker';
+        el.style.cssText = `
+            width: 10px;
+            height: 10px;
+            background: #00ff00;
+            border: 1px solid #00ff00;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(0, 255, 0, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+            opacity: 0.8;
+        `;
+
+        // Hover effect
+        el.addEventListener('mouseenter', () => {
+            el.style.background = '#ffaa00';
+            el.style.borderColor = '#ffaa00';
+            el.style.boxShadow = '0 0 16px rgba(255, 170, 0, 0.8)';
+            el.style.width = '14px';
+            el.style.height = '14px';
+            el.style.opacity = '1';
+            showTooltip(vessel, el);
+        });
+
+        el.addEventListener('mouseleave', () => {
+            if (selectedVesselId !== vessel.IMO) {
+                el.style.background = '#00ff00';
+                el.style.borderColor = '#00ff00';
+                el.style.boxShadow = '0 0 8px rgba(0, 255, 0, 0.4)';
+                el.style.width = '10px';
+                el.style.height = '10px';
+                el.style.opacity = '0.8';
+            }
+            hideTooltip();
+        });
+
+        return el;
+    }
+
+    // Create popup content for batch-loaded vessel with real-time data
+    function createVesselPopupContent(vessel) {
+        const timestamp = vessel.timestamp || 'N/A';
+        const speed = vessel.speed !== undefined ? `${vessel.speed} knots` : 'N/A';
+        const destination = vessel.destination || 'N/A';
+        const navStatus = vessel.navStatus || 'N/A';
+
+        return `
+            <div class="popup-vessel-name">🚢 ${vessel.vessel_name || 'UNKNOWN'}</div>
+            <div class="popup-detail">
+                <span class="popup-label">IMO:</span>
+                <span class="popup-value">${vessel.IMO || 'N/A'}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">MMSI:</span>
+                <span class="popup-value">${vessel.MMSI || 'N/A'}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Flag:</span>
+                <span class="popup-value">${vessel.flag || 'N/A'}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Type:</span>
+                <span class="popup-value">${vessel.vessel_type || 'N/A'}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Position:</span>
+                <span class="popup-value">${vessel.position?.lat?.toFixed(4)}°N, ${vessel.position?.lon?.toFixed(4)}°E</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Speed:</span>
+                <span class="popup-value">${speed}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Destination:</span>
+                <span class="popup-value">${destination}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Status:</span>
+                <span class="popup-value">${navStatus}</span>
+            </div>
+            <div class="popup-detail">
+                <span class="popup-label">Last Update:</span>
+                <span class="popup-value">${timestamp}</span>
+            </div>
+        `;
+    }
+
     // Create tooltip element
     function createTooltip() {
         if (!tooltipElement) {
@@ -328,19 +412,26 @@ const MapModule = (function() {
         // Clear existing markers
         clearMarkers();
 
+        let plottedCount = 0;
+
         vessels.forEach(vessel => {
-            // Generate random position for demo (will be replaced with real AIS data)
-            const position = generateRandomPosition(vessel);
+            // Use real position from vessel data (fetched from API)
+            if (!vessel.position || !vessel.position.lat || !vessel.position.lon) {
+                console.warn(`Skipping vessel ${vessel.vessel_name} - no position data`);
+                return;
+            }
 
-            // Create marker element
-            const el = createMarkerElement(vessel);
+            const position = [vessel.position.lon, vessel.position.lat];
 
-            // Create popup
+            // Create marker element (static style, different from tracked vessels)
+            const el = createStaticMarkerElement(vessel);
+
+            // Create popup with real-time data
             const popup = new mapboxgl.Popup({
                 offset: 15,
                 closeButton: true,
                 closeOnClick: false
-            }).setHTML(createPopupContent(vessel));
+            }).setHTML(createVesselPopupContent(vessel));
 
             // Create marker
             const marker = new mapboxgl.Marker(el)
@@ -354,9 +445,10 @@ const MapModule = (function() {
             });
 
             markers.push({ marker, vessel, element: el });
+            plottedCount++;
         });
 
-        console.log(`Plotted ${vessels.length} vessels on map`);
+        console.log(`Plotted ${plottedCount} vessels on map (${vessels.length - plottedCount} skipped)`);
     }
 
     // Select a vessel
@@ -700,8 +792,10 @@ const MapModule = (function() {
     function plotSubmarineCables(features) {
         // Add each cable as a separate layer
         features.forEach((feature, index) => {
-            const cableId = `cable-${index}`;
             const { name, cable_type, category } = feature.properties;
+            // Use different layer prefix for pipelines vs cables
+            const layerPrefix = cable_type === 'pipeline' ? 'pipeline' : 'cable';
+            const cableId = `${layerPrefix}-${index}`;
 
             // Determine cable color based on type
             let cableColor = getInfrastructureColor(category);
@@ -851,10 +945,11 @@ const MapModule = (function() {
     function toggleSubmarineCables() {
         cableLayersVisible = !cableLayersVisible;
 
-        // Get all layers and toggle cable-related ones
+        // Get all layers and toggle cable-related ones (but NOT pipelines)
         const layers = map.getStyle().layers;
         layers.forEach(layer => {
-            if (layer.id.startsWith('cable-')) {
+            // Only toggle layers that start with 'cable-', not 'pipeline-'
+            if (layer.id.startsWith('cable-') && !layer.id.startsWith('pipeline-')) {
                 map.setLayoutProperty(
                     layer.id,
                     'visibility',
