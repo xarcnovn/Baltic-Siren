@@ -1,7 +1,7 @@
 // Tracker Module - Real-time multi-vessel tracking with Datalastic API
 
 const TrackerModule = (function() {
-    const API_BASE_URL = 'https://api.datalastic.com/api/v0';
+    const API_BASE_URL = '/api'; // Netlify serverless functions
     const REFRESH_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
     const PROXIMITY_RADIUS_KM = 10; // Alert radius for critical infrastructure
     const MAX_TRACKED_VESSELS = 5; // Maximum simultaneous tracked vessels
@@ -14,7 +14,6 @@ const TrackerModule = (function() {
         { name: 'white', hex: '#ffffff', class: 'tracked-marker-white' }
     ];
 
-    let apiKey = null;
     let trackedVessels = []; // Array of tracked vessel objects
     let countdownInterval = null;
     let apiStats = {
@@ -25,8 +24,7 @@ const TrackerModule = (function() {
     };
 
     // Initialize tracker
-    function init(key) {
-        apiKey = key;
+    function init() {
         console.log('Tracker Module initialized');
         setupEventListeners();
         fetchApiUsage(); // Get initial API usage stats
@@ -65,13 +63,8 @@ const TrackerModule = (function() {
 
     // Fetch API usage statistics
     async function fetchApiUsage() {
-        if (!apiKey) {
-            console.error('API key not set');
-            return;
-        }
-
         try {
-            const response = await fetch(`${API_BASE_URL}/stat?api-key=${apiKey}`);
+            const response = await fetch(`${API_BASE_URL}/get-usage`);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -252,8 +245,8 @@ const TrackerModule = (function() {
 
     // Update vessel position from API (with IMO fallback)
     async function updateVesselPosition(trackedVessel) {
-        if (!trackedVessel || !apiKey) {
-            console.error('Cannot update position: vessel or API key missing');
+        if (!trackedVessel) {
+            console.error('Cannot update position: vessel missing');
             return;
         }
 
@@ -266,7 +259,7 @@ const TrackerModule = (function() {
 
             // First attempt: Try with MMSI
             if (mmsi) {
-                const response = await fetch(`${API_BASE_URL}/vessel?api-key=${apiKey}&mmsi=${mmsi}`);
+                const response = await fetch(`${API_BASE_URL}/get-vessel?mmsi=${mmsi}`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -278,7 +271,7 @@ const TrackerModule = (function() {
             // Second attempt: If no data and vessel has IMO, try with IMO
             if ((!data || !data.data) && imo) {
                 console.log(`No data for MMSI ${mmsi}, trying IMO ${imo}...`);
-                const response = await fetch(`${API_BASE_URL}/vessel?api-key=${apiKey}&imo=${imo}`);
+                const response = await fetch(`${API_BASE_URL}/get-vessel?imo=${imo}`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -339,8 +332,8 @@ const TrackerModule = (function() {
 
     // Fetch vessel history (with IMO fallback)
     async function fetchVesselHistory(trackedVessel, days = 7) {
-        if (!trackedVessel || !apiKey) {
-            console.error('Cannot fetch history: vessel or API key missing');
+        if (!trackedVessel) {
+            console.error('Cannot fetch history: vessel missing');
             return;
         }
 
@@ -363,7 +356,7 @@ const TrackerModule = (function() {
             // First attempt: Try with MMSI
             if (mmsi) {
                 const response = await fetch(
-                    `${API_BASE_URL}/vessel_history?api-key=${apiKey}&mmsi=${mmsi}&date_from=${formatDate(startDate)}&date_to=${formatDate(endDate)}`
+                    `${API_BASE_URL}/get-vessel?endpoint=history&mmsi=${mmsi}&date_from=${formatDate(startDate)}&date_to=${formatDate(endDate)}`
                 );
 
                 if (!response.ok) {
@@ -377,7 +370,7 @@ const TrackerModule = (function() {
             if ((!data || !data.data || (Array.isArray(data.data) && data.data.length === 0)) && imo) {
                 console.log(`No history for MMSI ${mmsi}, trying IMO ${imo}...`);
                 const response = await fetch(
-                    `${API_BASE_URL}/vessel_history?api-key=${apiKey}&imo=${imo}&date_from=${formatDate(startDate)}&date_to=${formatDate(endDate)}`
+                    `${API_BASE_URL}/get-vessel?endpoint=history&imo=${imo}&date_from=${formatDate(startDate)}&date_to=${formatDate(endDate)}`
                 );
 
                 if (!response.ok) {

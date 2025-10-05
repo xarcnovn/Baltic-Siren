@@ -1,0 +1,26 @@
+{
+  "name": "baltic-siren",
+  "version": "1.0.0",
+  "description": "Shadow Fleet Tracker - Real-time vessel monitoring system for Baltic Sea critical infrastructure protection",
+  "main": "index.js",
+  "scripts": {
+    "enrich": "node scrappers/enrich_positions.js",
+    "dev": "netlify dev",
+    "deploy": "netlify deploy --prod"
+  },
+  "keywords": [
+    "vessel-tracking",
+    "maritime",
+    "ais",
+    "baltic-sea",
+    "security"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  }
+}

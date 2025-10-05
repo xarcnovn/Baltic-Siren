@@ -4,7 +4,6 @@
     'use strict';
 
     let vesselData = [];
-    const DATALASTIC_API_KEY = '751f571d-a9ee-48c8-8c62-cd30fa980428';
 
     // Initialize application
     async function init() {
@@ -14,7 +13,7 @@
             // Initialize modules
             MapModule.init();
             UIModule.init();
-            TrackerModule.init(DATALASTIC_API_KEY);
+            TrackerModule.init();
 
             // Load vessel data
             await loadVesselData();

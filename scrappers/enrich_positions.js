@@ -1,10 +1,18 @@
 // Position Enrichment Script - Fetches and saves vessel positions to shadow_fleet.json
 // Run with: node enrich_positions.js
+// Requires .env file with DATALASTIC_VESSELS_API set
 
 const fs = require('fs');
+require('dotenv').config();
 
-const API_KEY = '751f571d-a9ee-48c8-8c62-cd30fa980428';
+const API_KEY = process.env.DATALASTIC_VESSELS_API;
 const API_BASE = 'https://api.datalastic.com/api/v0';
+
+if (!API_KEY) {
+    console.error('❌ Error: DATALASTIC_VESSELS_API environment variable not set');
+    console.error('Please create a .env file with DATALASTIC_VESSELS_API=your_api_key');
+    process.exit(1);
+}
 
 let stats = {
     total: 0,
