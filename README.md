@@ -66,16 +66,14 @@ BALTIC SIREN addresses critical needs for:
 - **Baltic states** (Poland, Lithuania, Latvia, Estonia, Finland, Sweden)
 - **EU maritime security agencies**
 - **NATO Baltic operations**
-
-### Market Opportunity
-Currently, only US, UK, and Israeli companies provide partial maritime threat detection solutions. BALTIC SIREN offers a **sovereign European alternative** critical for strategic autonomy.
+- Currently, only US, UK, and Israeli companies provide maritime threat detection solutions. BALTIC SIREN offers a **sovereign European alternative** critical for strategic autonomy.
 
 ---
 
 ## 🗺 Roadmap
 
 ### ✅ Current Features (v1.0)
-- [x] Shadow fleet database (100+ vessels)
+- [x] Shadow fleet database (650+ vessels)
 - [x] Real-time vessel tracking
 - [x] Critical infrastructure mapping
 - [x] Proximity alerts
@@ -285,43 +283,5 @@ node scrappers/enrich_positions.js
 - Adjust `REFRESH_INTERVAL` in `tracker.js` to manage usage
 
 ---
-
----
-
-## 👨‍💻 Development
-
-### Module Architecture
-
-**MapModule** (`app/js/map.js`)
-- Mapbox GL JS initialization and management
-- Vessel marker creation and plotting
-- Infrastructure and cable layer rendering
-- User interactions (zoom, pan, click)
-
-**UIModule** (`app/js/ui.js`)
-- Vessel list management and filtering
-- Search functionality
-- Details panel rendering
-- Statistics updates
-
-**TrackerModule** (`app/js/tracker.js`)
-- Real-time vessel tracking via Datalastic API
-- Multi-vessel management (up to 5 simultaneous)
-- Proximity alert detection
-- API usage monitoring
-- Movement history trails
-
-**App** (`app/js/app.js`)
-- Application initialization
-- Module coordination
-- Data loading and management
-
-### Adding New Vessels
-
-1. Update `shadow_fleet.json` with vessel data
-2. Ensure required fields: `vessel_name`, `IMO`, `MMSI`, `flag`, `vessel_type`
-3. Optional: Add `position` (lat/lon) for initial plotting
-4. Refresh the application
-
 
 *Last updated: 5 October 2025*
