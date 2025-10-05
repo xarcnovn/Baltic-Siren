@@ -1,7 +1,5 @@
 # ⚓ BALTIC SIREN
 
-### Shadow Fleet Response System
-
 > Real-time threat detection and response platform for monitoring sanctioned vessels and protecting critical Baltic Sea infrastructure
 
 **Built for HackYeah Defence Task '25**
