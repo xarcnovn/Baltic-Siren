@@ -21,10 +21,10 @@ The Baltic Sea region faces unprecedented maritime security threats:
 
 **BALTIC SIREN** provides a sovereign, efficient, and scalable platform for maritime threat detection and response:
 
-✅ **Real-time tracking** of the world's most notorious shadow fleet vessels
-✅ **Intelligent alerting** when suspicious activity occurs near critical infrastructure
-✅ **Response coordination** - foundation for integrating drones, satellites, and naval assets
-✅ **Polish-developed** with potential for European-wide deployment
+- ✅ **Real-time tracking** of the world's most notorious shadow fleet vessels
+- ✅ **Intelligent alerting** when suspicious activity occurs near critical infrastructure
+- ✅ **Response coordination** - foundation for integrating drones, satellites, and naval assets
+- ✅ **Polish-developed** with potential for European-wide deployment
 
 ---
 
