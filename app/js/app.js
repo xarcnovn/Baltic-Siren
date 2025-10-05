@@ -5,17 +5,39 @@
 
     let vesselData = [];
 
+    // Load Mapbox token from serverless function
+    async function loadMapboxToken() {
+        try {
+            console.log('Loading Mapbox token...');
+            const response = await fetch('/api/get-config');
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch config: ${response.status}`);
+            }
+
+            const config = await response.json();
+            mapboxgl.accessToken = config.mapboxToken;
+            console.log('✅ Mapbox token loaded');
+        } catch (error) {
+            console.error('Error loading Mapbox token:', error);
+            throw new Error('Failed to load map configuration. Please check your environment setup.');
+        }
+    }
+
     // Initialize application
     async function init() {
         console.log('Baltic Siren - Initializing...');
 
         try {
-            // Initialize modules
+            // Step 1: Load Mapbox token first (required for map)
+            await loadMapboxToken();
+
+            // Step 2: Initialize modules
             MapModule.init();
             UIModule.init();
             TrackerModule.init();
 
-            // Load vessel data
+            // Step 3: Load vessel data
             await loadVesselData();
 
             // Load vessels into UI

@@ -8,23 +8,6 @@
     <!-- Mapbox GL JS -->
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
-    <script>
-        // Fetch Mapbox token from serverless function
-        (async () => {
-            try {
-                const response = await fetch('/api/get-config');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch config');
-                }
-                const config = await response.json();
-                mapboxgl.accessToken = config.mapboxToken;
-            } catch (error) {
-                console.error('Error loading Mapbox token:', error);
-                // Fallback or error handling
-                alert('Failed to initialize map configuration. Please check your environment setup.');
-            }
-        })();
-    </script>
 
     <!-- Tactical CSS -->
     <link rel="stylesheet" href="css/tactical.css">
